@@ -1,0 +1,188 @@
+================================================================================
+                    UNDERSTANDING THE BUNDLE
+                    Private Media Vault
+================================================================================
+
+WHAT IS THIS PROJECT?
+--------------------------------------------------------------------------------
+A private, browser-based app for collecting and organizing video bookmarks from
+multiple sources. Think of it like a personal, offline-first media library that
+lives entirely in your browser. No servers. No accounts. No tracking.
+
+Everything stays on your machine in IndexedDB—a built-in browser database.
+
+
+WHY THESE TECH CHOICES?
+--------------------------------------------------------------------------------
+
+React (via Vite)
+  → Fast development, component-based architecture
+  → Vite gives near-instant hot reload and optimized builds
+  → You could swap this for vanilla JS or Svelte if preferred
+
+Zustand (State Management)
+  → Simpler than Redux, no boilerplate
+  → Built-in persistence middleware (connects to IndexedDB easily)
+  → ~3kb gzipped—tiny footprint
+
+IndexedDB (via idb-keyval)
+  → Browser-native storage, no server needed
+  → Can store large amounts of data (thumbnails, metadata)
+  → idb-keyval gives a simple key-value API over the complex IndexedDB
+
+Vanilla CSS (global.css)
+  → Full control over glassmorphism effects
+  → No CSS-in-JS runtime cost
+  → Easy to customize without learning a framework
+
+HTML5 Canvas
+  → Render custom thumbnails
+  → Create hover preview animations
+  → Draw visual indicators (ratings, badges)
+  → Potential for image manipulation (filters, effects)
+
+
+HOW THE APP FLOWS
+--------------------------------------------------------------------------------
+
+1. User opens app
+   ↓
+2. AuthGate checks if PIN is set
+   → If yes: show PIN input
+   → If no: show PIN creation (first time)
+   ↓
+3. On successful unlock → MainLayout renders
+   ↓
+4. Zustand stores hydrate from IndexedDB
+   → Media library loads
+   → Tags load
+   → UI preferences load
+   ↓
+5. User interacts:
+   → Add media (paste URL → optional metadata fetch → save to store)
+   → Browse/search/filter grid
+   → Click card → open player panel
+   → Edit, tag, rate, favorite, delete
+   ↓
+6. All changes auto-persist to IndexedDB
+   ↓
+7. On idle timeout or manual lock → back to AuthGate
+
+
+DATA STORAGE STRUCTURE
+--------------------------------------------------------------------------------
+
+IndexedDB Database: "media-vault"
+
+  Key: "media"       → Array of MediaItem objects
+  Key: "tags"        → Array of Tag objects
+  Key: "history"     → Array of HistoryEntry objects
+  Key: "auth"        → { pinHash: string, timeout: number }
+  Key: "ui"          → { theme, viewMode, sidebarOpen, etc. }
+
+
+CANVAS USAGE
+--------------------------------------------------------------------------------
+
+1. Thumbnail Rendering
+   - Draw video frame or placeholder to canvas
+   - Convert to data URL for display
+   - Cache in IndexedDB to avoid re-fetching
+
+2. Hover Preview (if supported)
+   - Animate through cached frames
+   - Or show animated gradient/shimmer effect
+
+3. Visual Indicators
+   - Draw star ratings on thumbnail corner
+   - Color-coded tag dots
+   - "New" or "Favorited" badges
+
+4. Future: Image Filters
+   - Blur, grayscale, contrast adjustments
+   - Thumbnail anonymization if desired
+
+
+SECURITY MODEL
+--------------------------------------------------------------------------------
+
+This is CLIENT-SIDE ONLY security. It's "keep-honest-people-honest" level.
+
+- PIN is hashed before storage (bcrypt-like or simple SHA-256)
+- Data is NOT encrypted at rest by default
+- If someone has access to your browser dev tools, they can access data
+- Export with encryption adds a layer (AES via Web Crypto API)
+
+For true security, run in a private browser profile or Electron app with
+additional OS-level protections.
+
+
+FILE STRUCTURE EXPLAINED
+--------------------------------------------------------------------------------
+
+src/
+├── components/          UI components, organized by domain
+│   ├── auth/            PIN entry, creation, lock screen
+│   ├── layout/          App shell: sidebar, content area, player
+│   ├── media/           Grid, cards, player
+│   ├── modals/          All modal dialogs
+│   └── ui/              Reusable primitives (Button, Input, etc.)
+│
+├── hooks/               Zustand stores (useMediaStore, etc.)
+│
+├── lib/                 Utility functions
+│   ├── db.js            IndexedDB helpers
+│   ├── crypto.js        Hashing, encryption utilities
+│   └── canvas.js        Canvas rendering helpers
+│
+├── styles/
+│   └── global.css       All styles (this file)
+│
+├── App.jsx              Root component, providers
+└── main.jsx             Entry point, renders App
+
+
+BUILD OUTPUT
+--------------------------------------------------------------------------------
+
+After running npm run build:
+
+dist/
+├── index.html           Entry HTML
+├── assets/
+│   ├── index-[hash].js  Main JS bundle (~50-60kb gzipped)
+│   └── index-[hash].css Styles (~8-12kb gzipped)
+
+Total production bundle: ~60-75kb gzipped
+Load time on fast connection: <1 second
+
+
+EXTENDING THE PROJECT
+--------------------------------------------------------------------------------
+
+Want to add features? Here's where:
+
+→ New media source support     → lib/parsers/ (add URL parsers)
+→ New view mode                → components/media/ + useUIStore
+→ Cloud backup                 → lib/sync.js (add optional API calls)
+→ Desktop app                  → Add Electron, wrap existing code
+→ Mobile support               → Add responsive breakpoints to CSS
+→ Themes                       → CSS custom properties in :root
+
+
+RUNNING LOCALLY
+--------------------------------------------------------------------------------
+
+Prerequisites: Node.js 18+
+
+1. Clone/download project
+2. npm install
+3. npm run dev
+4. Open http://localhost:5173
+
+Building for production:
+1. npm run build
+2. Serve dist/ folder with any static server
+
+
+================================================================================

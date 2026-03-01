@@ -1,0 +1,152 @@
+{
+  "project": {
+    "name": "Private Media Vault",
+    "version": "0.1.0",
+    "description": "Client-side private media aggregator with PIN lock, tagging, and local persistence",
+    "license": "UNLICENSED",
+    "private": true
+  },
+  "stack": {
+    "runtime": "browser",
+    "framework": "react",
+    "frameworkVersion": "18.3.x",
+    "buildTool": "vite",
+    "buildToolVersion": "5.x",
+    "language": "javascript",
+    "styling": "vanilla-css",
+    "stateManagement": "zustand",
+    "storage": "indexeddb",
+    "storageLib": "idb-keyval"
+  },
+  "features": {
+    "core": [
+      "pin-authentication",
+      "media-crud",
+      "tagging-system",
+      "rating-system",
+      "favorites",
+      "notes",
+      "search",
+      "filtering",
+      "sorting",
+      "watch-history"
+    ],
+    "canvas": [
+      "thumbnail-rendering",
+      "hover-preview",
+      "visual-indicators"
+    ],
+    "data": [
+      "local-persistence",
+      "json-export",
+      "json-import",
+      "data-wipe"
+    ],
+    "ui": [
+      "glassmorphism-theme",
+      "dark-mode",
+      "grid-view",
+      "list-view",
+      "slide-out-player",
+      "toast-notifications",
+      "modal-system"
+    ]
+  },
+  "components": {
+    "total": 22,
+    "breakdown": {
+      "auth": 1,
+      "layout": 3,
+      "media": 3,
+      "modals": 4,
+      "ui": 6,
+      "providers": 3,
+      "pages": 2
+    }
+  },
+  "stores": {
+    "count": 3,
+    "list": [
+      {
+        "name": "useMediaStore",
+        "purpose": "Media items, tags, favorites, history",
+        "persisted": true
+      },
+      {
+        "name": "useAuthStore",
+        "purpose": "PIN state, lock status, timeout",
+        "persisted": true
+      },
+      {
+        "name": "useUIStore",
+        "purpose": "Sidebar, player panel, view mode, theme",
+        "persisted": true
+      }
+    ]
+  },
+  "dataModels": {
+    "MediaItem": {
+      "id": "string (uuid)",
+      "url": "string",
+      "title": "string",
+      "thumbnail": "string | null",
+      "tags": "string[]",
+      "rating": "number (0-5)",
+      "isFavorite": "boolean",
+      "notes": "string",
+      "createdAt": "timestamp",
+      "lastViewedAt": "timestamp | null",
+      "viewCount": "number"
+    },
+    "Tag": {
+      "id": "string (uuid)",
+      "name": "string",
+      "color": "string (hex)"
+    },
+    "HistoryEntry": {
+      "mediaId": "string",
+      "viewedAt": "timestamp",
+      "duration": "number (seconds)"
+    }
+  },
+  "dependencies": {
+    "production": [
+      "react",
+      "react-dom",
+      "zustand",
+      "idb-keyval",
+      "uuid"
+    ],
+    "development": [
+      "vite",
+      "@vitejs/plugin-react",
+      "eslint",
+      "prettier"
+    ],
+    "optional": [
+      "electron",
+      "electron-builder"
+    ]
+  },
+  "bundleEstimates": {
+    "minifiedGzip": "~45-60kb",
+    "breakdown": {
+      "react": "~40kb",
+      "zustand": "~3kb",
+      "idb-keyval": "~1kb",
+      "appCode": "~15-20kb"
+    }
+  },
+  "browserSupport": [
+    "chrome >= 90",
+    "firefox >= 90",
+    "safari >= 15",
+    "edge >= 90"
+  ],
+  "securityConsiderations": [
+    "PIN stored as hash (optional: Web Crypto API)",
+    "No external API calls by default",
+    "All data local to browser/device",
+    "Export encryption optional"
+  ]
+}

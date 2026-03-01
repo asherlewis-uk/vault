@@ -1,0 +1,65 @@
+You are building a fully client-side React application called "Private Media Vault."
+CONTEXT
+A privacy-first, PIN-locked media aggregator for a single user to collect,
+organize, tag, rate, and view video bookmarks from multiple sources. All data
+persists locally in IndexedDB. No backend. No external tracking. Desktop-focused.
+TECH STACK
+•  React 18 + Vite
+•  Zustand for state (3 stores: media, auth, UI)
+•  idb-keyval for IndexedDB persistence
+•  Vanilla CSS with iOS 26 glassmorphism (translucent layers, blur, soft shadows,
+spring animations)
+•  HTML5 Canvas for thumbnail rendering, hover previews, visual badges
+CORE FEATURES
+1.  Auth Gate: PIN lock on load, auto-lock on idle, PIN stored as hash
+2.  Media CRUD: Add via URL, bulk import, edit title/tags/notes/rating, delete
+3.  Organization: Custom color-coded tags, 1-5 star rating, favorites, notes
+4.  Views: Grid (default), compact grid, list â all with instant search/filter/sort
+5.  Player Panel: Slide-out panel with embedded player, playlist queue, watch history
+6.  Data: Export/import as JSON, "nuke all" wipe function
+COMPONENT ARCHITECTURE
+•  <App> â <AuthGate> â <MainLayout>
+•  <MainLayout> contains: <Sidebar>, <ContentArea>, <PlayerPanel>
+•  <ContentArea> contains: <SearchBar>, <FilterBar>, <MediaGrid>
+•  <MediaGrid> renders multiple <MediaCard> (Canvas-rendered thumbnails)
+•  Modals: <AddMediaModal>, <EditModal>, <SettingsModal>, <TagManager>
+DATA MODELS
+MediaItem:
+•  id: string (uuid)
+•  url: string
+•  title: string
+•  thumbnail: string | null
+•  tags: string[]
+•  rating: number (0-5)
+•  isFavorite: boolean
+•  notes: string
+•  createdAt: number (timestamp)
+•  lastViewedAt: number | null
+•  viewCount: number
+Tag:
+•  id: string (uuid)
+•  name: string
+•  color: string (hex)
+DESIGN SPECS
+•  Dark mode only, base background #0a0a0c
+•  Glass surfaces: rgba(255,255,255,0.03-0.05), backdrop-filter blur 16-64px
+•  Border: rgba(255,255,255,0.08), focus state: 0.15
+•  Accent color: #0a84ff (iOS blue)
+•  Animations: cubic-bezier(0.175, 0.885, 0.32, 1.1) for spring feel
+•  Cards: 16:9 aspect ratio, hover lifts with scale, gradient overlay reveals info
+YOUR TASK
+Generate production-ready code for [SPECIFIC COMPONENT OR FEATURE]. Follow the
+architecture above. Use functional components with hooks. Destructure props.
+Use CSS class names matching the provided global.css conventions (e.g., .glass,
+.btn--primary, .media-card). Include proper accessibility attributes. Handle
+loading/error states. Add brief comments only where logic is non-obvious.
+[INSERT SPECIFIC REQUEST HERE]
+Examples of specific requests:
+•  "Build the MediaCard component with Canvas thumbnail rendering, hover overlay,
+context menu, and rating display"
+•  "Build the useMediaStore Zustand store with full CRUD, search, filter, and
+IndexedDB persistence"
+•  "Build the AuthGate component with PIN input, keypad, creation flow, and
+auto-lock timeout"
+•  "Build the AddMediaModal with URL input, metadata preview, tag selection,
+and bulk import tab"
