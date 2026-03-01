@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Vibration,
   Platform,
 } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
@@ -51,19 +51,34 @@ function KeypadButton({
   onPress: () => void;
 }) {
   const scale = useSharedValue(1);
-  const animStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  const opacity = useSharedValue(1);
+  const animStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+    opacity: opacity.value,
+  }));
 
   return (
     <Pressable
+      style={styles.keyOuter}
       onPressIn={() => {
-        scale.value = withSpring(0.9, { damping: 10, stiffness: 300 });
+        scale.value = withSpring(0.91, { damping: 10, stiffness: 320 });
+        opacity.value = withTiming(0.75, { duration: 80 });
       }}
       onPressOut={() => {
-        scale.value = withSpring(1, { damping: 10, stiffness: 300 });
+        scale.value = withSpring(1, { damping: 10, stiffness: 320 });
+        opacity.value = withTiming(1, { duration: 100 });
         onPress();
       }}
     >
       <Animated.View style={[styles.key, animStyle]}>
+        <LinearGradient
+          colors={['rgba(255,255,255,0.11)', 'rgba(255,255,255,0.02)']}
+          style={StyleSheet.absoluteFill}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+          pointerEvents="none"
+        />
+        <View style={styles.keySpecular} pointerEvents="none" />
         <Text style={styles.keyLabel}>{label}</Text>
         {sub ? <Text style={styles.keySub}>{sub}</Text> : null}
       </Animated.View>
@@ -81,13 +96,16 @@ export default function AuthGate() {
   const [isCreating, setIsCreating] = useState(false);
   const shakeX = useSharedValue(0);
   const containerOpacity = useSharedValue(0);
+  const containerY = useSharedValue(20);
 
   useEffect(() => {
-    containerOpacity.value = withTiming(1, { duration: 400 });
+    containerOpacity.value = withTiming(1, { duration: 500 });
+    containerY.value = withSpring(0, { damping: 18, stiffness: 150 });
   }, []);
 
   const containerStyle = useAnimatedStyle(() => ({
     opacity: containerOpacity.value,
+    transform: [{ translateY: containerY.value }],
   }));
 
   const dotsStyle = useAnimatedStyle(() => ({
@@ -96,11 +114,12 @@ export default function AuthGate() {
 
   function shake() {
     shakeX.value = withSequence(
-      withTiming(-12, { duration: 60 }),
-      withTiming(12, { duration: 60 }),
-      withTiming(-8, { duration: 60 }),
-      withTiming(8, { duration: 60 }),
-      withTiming(0, { duration: 60 })
+      withTiming(-14, { duration: 55 }),
+      withTiming(14, { duration: 55 }),
+      withTiming(-10, { duration: 55 }),
+      withTiming(10, { duration: 55 }),
+      withTiming(-6, { duration: 55 }),
+      withTiming(0, { duration: 55 })
     );
     if (Platform.OS !== 'web') Vibration.vibrate(300);
   }
@@ -172,7 +191,14 @@ export default function AuthGate() {
       <Animated.View style={[styles.container, containerStyle]}>
         <View style={styles.header}>
           <View style={styles.iconRing}>
-            <Ionicons name="lock-closed" size={28} color={Colors.accent} />
+            <LinearGradient
+              colors={['rgba(10,132,255,0.28)', 'rgba(10,132,255,0.08)']}
+              style={StyleSheet.absoluteFill}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+            />
+            <View style={styles.iconRingSpecular} />
+            <Ionicons name="lock-closed" size={26} color={Colors.accent} />
           </View>
           <Text style={styles.title}>{getTitle()}</Text>
           <Text style={styles.subtitle}>{getSubtitle()}</Text>
@@ -207,7 +233,7 @@ export default function AuthGate() {
             <View style={styles.keyEmpty} />
             <KeypadButton label="0" onPress={() => handleDigit('0')} />
             <Pressable style={styles.deleteKey} onPress={handleDelete}>
-              <Ionicons name="backspace-outline" size={24} color={Colors.text} />
+              <Ionicons name="backspace-outline" size={22} color={Colors.text} />
             </Pressable>
           </View>
         </View>
@@ -245,19 +271,31 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: 'center',
-    marginBottom: 40,
-    gap: 12,
+    marginBottom: 44,
+    gap: 10,
   },
   iconRing: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: Colors.accentDim,
+    width: 76,
+    height: 76,
+    borderRadius: 38,
     borderWidth: 1,
-    borderColor: Colors.accentGlow,
+    borderColor: 'rgba(10,132,255,0.40)',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
+    overflow: 'hidden',
+    shadowColor: Colors.accent,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+  },
+  iconRingSpecular: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: 'rgba(10,132,255,0.55)',
   },
   title: {
     fontSize: 26,
@@ -273,20 +311,24 @@ const styles = StyleSheet.create({
   },
   dotsRow: {
     flexDirection: 'row',
-    gap: 20,
-    marginBottom: 12,
+    gap: 22,
+    marginBottom: 10,
   },
   dot: {
     width: 16,
     height: 16,
     borderRadius: 8,
-    backgroundColor: Colors.glassBorder,
+    backgroundColor: 'rgba(255,255,255,0.10)',
     borderWidth: 1.5,
-    borderColor: Colors.glassBorderFocus,
+    borderColor: 'rgba(255,255,255,0.22)',
   },
   dotFilled: {
     backgroundColor: Colors.accent,
     borderColor: Colors.accent,
+    shadowColor: Colors.accent,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 6,
   },
   error: {
     fontSize: 13,
@@ -301,22 +343,40 @@ const styles = StyleSheet.create({
   },
   keypad: {
     width: '100%',
-    gap: 8,
+    gap: 10,
   },
   keyRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: 10,
+  },
+  keyOuter: {
+    flex: 1,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 5,
   },
   key: {
     flex: 1,
-    height: 72,
-    backgroundColor: Colors.glass,
-    borderRadius: 18,
+    height: 70,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: 'rgba(255,255,255,0.10)',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  keySpecular: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.24)',
   },
   keyLabel: {
     fontSize: 24,
@@ -336,12 +396,12 @@ const styles = StyleSheet.create({
   },
   deleteKey: {
     flex: 1,
-    height: 72,
+    height: 70,
     alignItems: 'center',
     justifyContent: 'center',
   },
   backBtn: {
-    marginTop: 24,
+    marginTop: 28,
   },
   backText: {
     color: Colors.accent,

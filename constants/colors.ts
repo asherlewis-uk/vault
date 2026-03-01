@@ -7,6 +7,11 @@ const Colors = {
   glassActive: 'rgba(255,255,255,0.10)',
   glassBorder: 'rgba(255,255,255,0.08)',
   glassBorderFocus: 'rgba(255,255,255,0.18)',
+  glassSpecular: 'rgba(255,255,255,0.16)',
+  glassSpecularHeavy: 'rgba(255,255,255,0.22)',
+  glassSurface: 'rgba(255,255,255,0.055)',
+  glassSheen: ['rgba(255,255,255,0.09)', 'rgba(255,255,255,0.00)'] as const,
+  glassDepth: ['rgba(0,0,0,0.00)', 'rgba(0,0,0,0.22)'] as const,
   text: 'rgba(255,255,255,0.92)',
   textSecondary: 'rgba(255,255,255,0.55)',
   textTertiary: 'rgba(255,255,255,0.30)',
@@ -19,7 +24,7 @@ const Colors = {
   dangerDim: 'rgba(255,69,58,0.15)',
   purple: '#5e5ce6',
   tint: '#0a84ff',
-  tabIconDefault: 'rgba(255,255,255,0.4)',
+  tabIconDefault: 'rgba(255,255,255,0.40)',
   tabIconSelected: '#0a84ff',
 };
 

@@ -59,24 +59,34 @@ function ContextMenu({
   return (
     <Modal transparent visible={visible} onRequestClose={onClose} animationType="fade">
       <Pressable style={styles.menuBackdrop} onPress={onClose}>
-        <View style={styles.menu}>
-          {options.map((opt, i) => (
-            <Pressable
-              key={opt.label}
-              style={({ pressed }) => [
-                styles.menuItem,
-                pressed && { backgroundColor: Colors.glassHover },
-                i < options.length - 1 && styles.menuItemBorder,
-              ]}
-              onPress={() => {
-                onClose();
-                opt.onPress();
-              }}
-            >
-              <Ionicons name={opt.icon} size={18} color={opt.color} />
-              <Text style={[styles.menuLabel, { color: opt.color }]}>{opt.label}</Text>
-            </Pressable>
-          ))}
+        <View style={styles.menuShadow}>
+          <View style={styles.menu}>
+            <LinearGradient
+              colors={['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.00)']}
+              style={[StyleSheet.absoluteFill, { borderRadius: 18 }]}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 0.5 }}
+              pointerEvents="none"
+            />
+            <View style={styles.menuSpecular} />
+            {options.map((opt, i) => (
+              <Pressable
+                key={opt.label}
+                style={({ pressed }) => [
+                  styles.menuItem,
+                  pressed && { backgroundColor: 'rgba(255,255,255,0.06)' },
+                  i < options.length - 1 && styles.menuItemBorder,
+                ]}
+                onPress={() => {
+                  onClose();
+                  opt.onPress();
+                }}
+              >
+                <Ionicons name={opt.icon} size={18} color={opt.color} />
+                <Text style={[styles.menuLabel, { color: opt.color }]}>{opt.label}</Text>
+              </Pressable>
+            ))}
+          </View>
         </View>
       </Pressable>
     </Modal>
@@ -100,7 +110,7 @@ export default function MediaCard({
   }));
 
   function handlePressIn() {
-    scale.value = withSpring(0.97, { damping: 15, stiffness: 250 });
+    scale.value = withSpring(0.965, { damping: 15, stiffness: 250 });
   }
   function handlePressOut() {
     scale.value = withSpring(1, { damping: 15, stiffness: 250 });
@@ -116,31 +126,39 @@ export default function MediaCard({
   if (viewMode === 'list') {
     return (
       <>
-        <Animated.View style={animStyle}>
+        <Animated.View style={[styles.listCardShadow, animStyle]}>
           <Pressable
-            style={({ pressed }) => [styles.listCard, pressed && { opacity: 0.85 }]}
+            style={({ pressed }) => [styles.listCard, pressed && { opacity: 0.88 }]}
             onPress={onPlay}
             onLongPress={handleLongPress}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
           >
+            <LinearGradient
+              colors={['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.00)']}
+              style={[StyleSheet.absoluteFill, { borderRadius: 16 }]}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 0.6 }}
+              pointerEvents="none"
+            />
+            <View style={styles.listSpecular} />
             <View style={styles.listThumb}>
               {item.thumbnail ? (
                 <Image source={{ uri: item.thumbnail }} style={StyleSheet.absoluteFill} contentFit="cover" />
               ) : (
                 <View style={[StyleSheet.absoluteFill, styles.thumbPlaceholder]}>
-                  <Ionicons name="play-circle" size={24} color={Colors.textTertiary} />
+                  <Ionicons name="play-circle" size={22} color={Colors.textTertiary} />
                 </View>
               )}
               <View style={styles.listThumbOverlay}>
-                <Ionicons name="play" size={14} color="white" />
+                <Ionicons name="play" size={12} color="white" />
               </View>
             </View>
             <View style={styles.listInfo}>
               <Text style={styles.listTitle} numberOfLines={2}>{item.title}</Text>
               <Text style={styles.listMeta}>{source} · {formatDate(item.createdAt)}</Text>
               <View style={styles.listBottom}>
-                <StarRating rating={item.rating} size={12} />
+                <StarRating rating={item.rating} size={11} />
                 <View style={styles.listTagRow}>
                   {itemTags.slice(0, 2).map((tag) => (
                     <TagPill key={tag.id} tag={tag} size="sm" />
@@ -150,7 +168,7 @@ export default function MediaCard({
             </View>
             <View style={styles.listActions}>
               {item.isFavorite && (
-                <Ionicons name="heart" size={14} color={Colors.danger} />
+                <Ionicons name="heart" size={13} color={Colors.danger} />
               )}
               <Pressable onPress={() => setMenuVisible(true)} hitSlop={8}>
                 <Ionicons name="ellipsis-horizontal" size={18} color={Colors.textTertiary} />
@@ -188,15 +206,23 @@ export default function MediaCard({
               <Image source={{ uri: item.thumbnail }} style={StyleSheet.absoluteFill} contentFit="cover" />
             ) : (
               <View style={[StyleSheet.absoluteFill, styles.thumbPlaceholder]}>
-                <Ionicons name="film-outline" size={isCompact ? 28 : 36} color={Colors.textTertiary} />
+                <Ionicons name="film-outline" size={isCompact ? 26 : 34} color={Colors.textTertiary} />
                 <Text style={styles.sourceLabel}>{source}</Text>
               </View>
             )}
 
             <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.9)']}
+              colors={['transparent', 'rgba(0,0,0,0.92)']}
               style={StyleSheet.absoluteFill}
-              locations={[0.3, 1]}
+              locations={[0.28, 1]}
+            />
+
+            <LinearGradient
+              colors={['rgba(255,255,255,0.10)', 'transparent']}
+              style={[StyleSheet.absoluteFill, { height: '35%' }]}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+              pointerEvents="none"
             />
 
             <View style={styles.overlay}>
@@ -206,7 +232,7 @@ export default function MediaCard({
                     <Text style={styles.sourceBadgeText}>{source}</Text>
                   </View>
                   {item.isFavorite && (
-                    <Ionicons name="heart" size={14} color={Colors.danger} />
+                    <Ionicons name="heart" size={13} color={Colors.danger} />
                   )}
                 </View>
               )}
@@ -229,13 +255,9 @@ export default function MediaCard({
 
             {isCompact && item.isFavorite && (
               <View style={styles.favBadge}>
-                <Ionicons name="heart" size={10} color={Colors.danger} />
+                <Ionicons name="heart" size={9} color={Colors.danger} />
               </View>
             )}
-
-            <View style={styles.playBtn}>
-              <Ionicons name="play-circle" size={isCompact ? 28 : 36} color="white" />
-            </View>
           </View>
         </Pressable>
       </Animated.View>
@@ -254,19 +276,26 @@ export default function MediaCard({
 
 const styles = StyleSheet.create({
   cardWrapper: {
-    borderRadius: 14,
+    borderRadius: 16,
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.38,
+    shadowRadius: 14,
+    elevation: 6,
   },
   card: {
-    borderRadius: 14,
+    borderRadius: 16,
     overflow: 'hidden',
   },
   thumb: {
     width: '100%',
     aspectRatio: 16 / 9,
     backgroundColor: Colors.bgFloating,
-    borderRadius: 14,
+    borderRadius: 16,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   thumbCompact: {
     aspectRatio: 16 / 9,
@@ -294,13 +323,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: 3,
   },
   sourceBadge: {
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.55)',
     borderRadius: 6,
     paddingHorizontal: 6,
     paddingVertical: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   sourceBadgeText: {
     fontSize: 10,
@@ -323,44 +354,58 @@ const styles = StyleSheet.create({
     marginTop: 2,
     flexWrap: 'wrap',
   },
-  playBtn: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -18 }, { translateY: -18 }],
-    opacity: 0,
-  },
   favBadge: {
     position: 'absolute',
     top: 6,
     right: 6,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.55)',
     borderRadius: 8,
     padding: 3,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
+  },
+  listCardShadow: {
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.32,
+    shadowRadius: 12,
+    elevation: 5,
   },
   listCard: {
     flexDirection: 'row',
     padding: 12,
-    backgroundColor: Colors.glass,
-    borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.055)',
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: 'rgba(255,255,255,0.09)',
     gap: 12,
     alignItems: 'flex-start',
+    overflow: 'hidden',
+  },
+  listSpecular: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.18)',
   },
   listThumb: {
-    width: 96,
-    height: 60,
+    width: 92,
+    height: 58,
     borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: Colors.bgFloating,
     flexShrink: 0,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.07)',
   },
   listThumbOverlay: {
     position: 'absolute',
     bottom: 4,
     right: 4,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(0,0,0,0.65)',
     borderRadius: 6,
     padding: 2,
   },
@@ -397,17 +442,34 @@ const styles = StyleSheet.create({
   },
   menuBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.55)',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  menuShadow: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.60,
+    shadowRadius: 24,
+    elevation: 12,
+    borderRadius: 18,
+  },
   menu: {
-    width: 220,
-    backgroundColor: Colors.bgFloating,
-    borderRadius: 16,
+    width: 228,
+    backgroundColor: 'rgba(30,30,34,0.95)',
+    borderRadius: 18,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: 'rgba(255,255,255,0.10)',
     overflow: 'hidden',
+  },
+  menuSpecular: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.22)',
+    zIndex: 1,
   },
   menuItem: {
     flexDirection: 'row',
@@ -418,7 +480,7 @@ const styles = StyleSheet.create({
   },
   menuItemBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: Colors.glassBorder,
+    borderBottomColor: 'rgba(255,255,255,0.07)',
   },
   menuLabel: {
     fontSize: 15,

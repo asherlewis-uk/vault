@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -33,17 +34,25 @@ const SORT_OPTIONS: { key: SortBy; label: string }[] = [
   { key: 'lastViewed', label: 'Recent' },
 ];
 
-function FAB({ onPress }: { onPress: () => void }) {
+function FAB({ onPress, bottom }: { onPress: () => void; bottom: number }) {
   const scale = useSharedValue(1);
   const animStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
   return (
-    <Animated.View style={[styles.fab, animStyle]}>
+    <Animated.View style={[styles.fab, { bottom }, animStyle]}>
       <Pressable
         style={styles.fabInner}
-        onPressIn={() => { scale.value = withSpring(0.9, { damping: 8, stiffness: 300 }); }}
+        onPressIn={() => { scale.value = withSpring(0.88, { damping: 8, stiffness: 300 }); }}
         onPressOut={() => { scale.value = withSpring(1, { damping: 8, stiffness: 300 }); onPress(); }}
       >
+        <LinearGradient
+          colors={['rgba(255,255,255,0.22)', 'rgba(255,255,255,0.00)']}
+          style={[StyleSheet.absoluteFill, { borderRadius: 28 }]}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 0.6 }}
+          pointerEvents="none"
+        />
+        <View style={styles.fabSpecular} />
         <Ionicons name="add" size={28} color="white" />
       </Pressable>
     </Animated.View>
@@ -208,6 +217,14 @@ export default function LibraryScreen() {
 
       <Animated.View style={[styles.searchContainer, searchStyle]}>
         <View style={styles.searchBox}>
+          <LinearGradient
+            colors={['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.00)']}
+            style={[StyleSheet.absoluteFill, { borderRadius: 14 }]}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 0.7 }}
+            pointerEvents="none"
+          />
+          <View style={styles.searchSpecular} />
           <Ionicons name="search" size={16} color={Colors.textTertiary} />
           <TextInput
             ref={searchInputRef}
@@ -297,7 +314,7 @@ export default function LibraryScreen() {
           numColumns={numCols}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-          contentContainerStyle={[styles.listContent, { paddingBottom: insets.bottom + 100 }]}
+          contentContainerStyle={[styles.listContent, { paddingBottom: (Platform.OS === 'web' ? 34 : insets.bottom) + 140 }]}
           columnWrapperStyle={numCols > 1 ? styles.columnWrapper : undefined}
           showsVerticalScrollIndicator={false}
           onScroll={() => updateActivity()}
@@ -305,7 +322,10 @@ export default function LibraryScreen() {
         />
       )}
 
-      <FAB onPress={() => router.push('/add')} />
+      <FAB
+        onPress={() => router.push('/add')}
+        bottom={(Platform.OS === 'web' ? 34 : insets.bottom) + 96}
+      />
     </View>
   );
 }
@@ -368,13 +388,27 @@ const styles = StyleSheet.create({
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.glass,
-    borderRadius: 12,
+    backgroundColor: 'rgba(255,255,255,0.055)',
+    borderRadius: 14,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: 'rgba(255,255,255,0.10)',
     paddingHorizontal: 12,
     gap: 8,
     height: 44,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.20,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  searchSpecular: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.18)',
   },
   searchInput: {
     flex: 1,
@@ -472,16 +506,15 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    bottom: 100,
-    right: 20,
+    right: 22,
     width: 56,
     height: 56,
     borderRadius: 28,
     shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.50,
+    shadowRadius: 18,
+    elevation: 10,
   },
   fabInner: {
     width: 56,
@@ -490,5 +523,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.22)',
+  },
+  fabSpecular: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.40)',
   },
 });
