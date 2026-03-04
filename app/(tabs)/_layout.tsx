@@ -2,7 +2,6 @@ import { isLiquidGlassAvailable } from 'expo-glass-effect';
 import { Tabs } from 'expo-router';
 import { NativeTabs, Icon, Label } from 'expo-router/unstable-native-tabs';
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Platform, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -42,14 +41,7 @@ function IslandBackground() {
       ) : (
         <View style={[StyleSheet.absoluteFill, { backgroundColor: '#18181c' }]} />
       )}
-      <LinearGradient
-        colors={['rgba(255,255,255,0.09)', 'rgba(255,255,255,0.00)']}
-        style={[StyleSheet.absoluteFill, { height: '50%' }]}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
-        pointerEvents="none"
-      />
-      <View style={islandStyles.specularLine} pointerEvents="none" />
+      <View style={islandStyles.specularLine} />
     </View>
   );
 }

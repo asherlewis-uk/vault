@@ -61,13 +61,6 @@ function ContextMenu({
       <Pressable style={styles.menuBackdrop} onPress={onClose}>
         <View style={styles.menuShadow}>
           <View style={styles.menu}>
-            <LinearGradient
-              colors={['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.00)']}
-              style={[StyleSheet.absoluteFill, { borderRadius: 18 }]}
-              start={{ x: 0.5, y: 0 }}
-              end={{ x: 0.5, y: 0.5 }}
-              pointerEvents="none"
-            />
             <View style={styles.menuSpecular} />
             {options.map((opt, i) => (
               <Pressable
@@ -134,13 +127,6 @@ export default function MediaCard({
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
           >
-            <LinearGradient
-              colors={['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.00)']}
-              style={[StyleSheet.absoluteFill, { borderRadius: 16 }]}
-              start={{ x: 0.5, y: 0 }}
-              end={{ x: 0.5, y: 0.6 }}
-              pointerEvents="none"
-            />
             <View style={styles.listSpecular} />
             <View style={styles.listThumb}>
               {item.thumbnail ? (
@@ -215,14 +201,6 @@ export default function MediaCard({
               colors={['transparent', 'rgba(0,0,0,0.92)']}
               style={StyleSheet.absoluteFill}
               locations={[0.28, 1]}
-            />
-
-            <LinearGradient
-              colors={['rgba(255,255,255,0.10)', 'transparent']}
-              style={[StyleSheet.absoluteFill, { height: '35%' }]}
-              start={{ x: 0.5, y: 0 }}
-              end={{ x: 0.5, y: 1 }}
-              pointerEvents="none"
             />
 
             <View style={styles.overlay}>

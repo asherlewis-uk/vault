@@ -9,7 +9,6 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -45,13 +44,6 @@ function FAB({ onPress, bottom }: { onPress: () => void; bottom: number }) {
         onPressIn={() => { scale.value = withSpring(0.88, { damping: 8, stiffness: 300 }); }}
         onPressOut={() => { scale.value = withSpring(1, { damping: 8, stiffness: 300 }); onPress(); }}
       >
-        <LinearGradient
-          colors={['rgba(255,255,255,0.22)', 'rgba(255,255,255,0.00)']}
-          style={[StyleSheet.absoluteFill, { borderRadius: 28 }]}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 0.6 }}
-          pointerEvents="none"
-        />
         <View style={styles.fabSpecular} />
         <Ionicons name="add" size={28} color="white" />
       </Pressable>
@@ -217,13 +209,6 @@ export default function LibraryScreen() {
 
       <Animated.View style={[styles.searchContainer, searchStyle]}>
         <View style={styles.searchBox}>
-          <LinearGradient
-            colors={['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.00)']}
-            style={[StyleSheet.absoluteFill, { borderRadius: 14 }]}
-            start={{ x: 0.5, y: 0 }}
-            end={{ x: 0.5, y: 0.7 }}
-            pointerEvents="none"
-          />
           <View style={styles.searchSpecular} />
           <Ionicons name="search" size={16} color={Colors.textTertiary} />
           <TextInput

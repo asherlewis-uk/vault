@@ -7,7 +7,6 @@ import {
   Vibration,
   Platform,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
@@ -71,14 +70,7 @@ function KeypadButton({
       }}
     >
       <Animated.View style={[styles.key, animStyle]}>
-        <LinearGradient
-          colors={['rgba(255,255,255,0.11)', 'rgba(255,255,255,0.02)']}
-          style={StyleSheet.absoluteFill}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-          pointerEvents="none"
-        />
-        <View style={styles.keySpecular} pointerEvents="none" />
+        <View style={styles.keySpecular} />
         <Text style={styles.keyLabel}>{label}</Text>
         {sub ? <Text style={styles.keySub}>{sub}</Text> : null}
       </Animated.View>
@@ -191,12 +183,6 @@ export default function AuthGate() {
       <Animated.View style={[styles.container, containerStyle]}>
         <View style={styles.header}>
           <View style={styles.iconRing}>
-            <LinearGradient
-              colors={['rgba(10,132,255,0.28)', 'rgba(10,132,255,0.08)']}
-              style={StyleSheet.absoluteFill}
-              start={{ x: 0.5, y: 0 }}
-              end={{ x: 0.5, y: 1 }}
-            />
             <View style={styles.iconRingSpecular} />
             <Ionicons name="lock-closed" size={26} color={Colors.accent} />
           </View>
@@ -278,6 +264,7 @@ const styles = StyleSheet.create({
     width: 76,
     height: 76,
     borderRadius: 38,
+    backgroundColor: Colors.accentDim,
     borderWidth: 1,
     borderColor: 'rgba(10,132,255,0.40)',
     alignItems: 'center',
@@ -285,9 +272,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     overflow: 'hidden',
     shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.35,
-    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
   },
   iconRingSpecular: {
     position: 'absolute',
@@ -295,7 +282,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: 'rgba(10,132,255,0.55)',
+    backgroundColor: 'rgba(10,132,255,0.50)',
   },
   title: {
     fontSize: 26,
