@@ -213,11 +213,11 @@ function ColorBendsWeb(props: ColorBendsProps) {
       rendererRef.current = renderer;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.domElement.style.width = "100%";
-      renderer.domElement.style.height = "100%";
       renderer.domElement.style.position = "absolute";
       renderer.domElement.style.top = "0";
       renderer.domElement.style.left = "0";
+      renderer.domElement.style.width = "100%";
+      renderer.domElement.style.height = "100%";
       renderer.domElement.style.pointerEvents = "none";
       container.appendChild(renderer.domElement);
 
@@ -271,10 +271,15 @@ function ColorBendsWeb(props: ColorBendsProps) {
         const rad = (deg * Math.PI) / 180;
         material.uniforms.uRot.value.set(Math.cos(rad), Math.sin(rad));
 
-        const arr = (p.colors ?? [])
-          .filter(Boolean)
-          .slice(0, MAX_COLORS)
-          .map(toVec3);
+        const fallback = [
+          "#0a84ff",
+          "#bf5af2",
+          "#ff375f",
+          "#30d158",
+          "#ffd60a",
+        ];
+        const rawColors = p.colors && p.colors.length > 0 ? p.colors : fallback;
+        const arr = rawColors.slice(0, MAX_COLORS).map(toVec3);
         for (let i = 0; i < MAX_COLORS; i++) {
           if (i < arr.length) material.uniforms.uColors.value[i].copy(arr[i]);
           else material.uniforms.uColors.value[i].set(0, 0, 0);
