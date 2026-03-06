@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,16 +8,23 @@ import {
   ScrollView,
   Alert,
   Share,
-} from 'react-native';
-import { router } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import { useMedia } from '@/contexts/MediaContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { Colors } from '@/constants/colors';
+} from "react-native";
+import { router } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import { useMedia } from "@/contexts/MediaContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { Colors } from "@/constants/colors";
+import ColorBends from "@/components/ColorBends";
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>{title}</Text>
@@ -45,72 +52,97 @@ function Row({
 }) {
   return (
     <Pressable
-      style={({ pressed }) => [styles.row, pressed && onPress && { backgroundColor: Colors.glassHover }]}
+      style={({ pressed }) => [
+        styles.row,
+        pressed && onPress && { backgroundColor: Colors.glassHover },
+      ]}
       onPress={onPress}
       disabled={!onPress && !rightContent}
     >
-      <View style={[styles.rowIcon, { backgroundColor: (iconColor ?? Colors.accent) + '22' }]}>
+      <View
+        style={[
+          styles.rowIcon,
+          { backgroundColor: (iconColor ?? Colors.accent) + "22" },
+        ]}
+      >
         <Ionicons name={icon} size={18} color={iconColor ?? Colors.accent} />
       </View>
       <View style={styles.rowInfo}>
-        <Text style={[styles.rowLabel, danger && { color: Colors.danger }]}>{label}</Text>
+        <Text style={[styles.rowLabel, danger && { color: Colors.danger }]}>
+          {label}
+        </Text>
         {sublabel ? <Text style={styles.rowSublabel}>{sublabel}</Text> : null}
       </View>
-      {rightContent ?? (onPress ? <Ionicons name="chevron-forward" size={16} color={Colors.textTertiary} /> : null)}
+      {rightContent ??
+        (onPress ? (
+          <Ionicons
+            name="chevron-forward"
+            size={16}
+            color={Colors.textTertiary}
+          />
+        ) : null)}
     </Pressable>
   );
 }
 
 const TIMEOUT_OPTIONS = [
-  { label: 'Never', value: 0 },
-  { label: '1 minute', value: 1 },
-  { label: '5 minutes', value: 5 },
-  { label: '15 minutes', value: 15 },
-  { label: '30 minutes', value: 30 },
+  { label: "Never", value: 0 },
+  { label: "1 minute", value: 1 },
+  { label: "5 minutes", value: 5 },
+  { label: "15 minutes", value: 15 },
+  { label: "30 minutes", value: 30 },
 ];
 
 export default function SettingsScreen() {
-  const { items, tags, history, clearHistory, exportData, importData, nukeAll } = useMedia();
+  const {
+    items,
+    tags,
+    history,
+    clearHistory,
+    exportData,
+    importData,
+    nukeAll,
+  } = useMedia();
   const { lock, idleTimeout, setIdleTimeout, hasPin } = useAuth();
   const insets = useSafeAreaInsets();
   const [showTimeoutPicker, setShowTimeoutPicker] = useState(false);
 
-  const topPad = Platform.OS === 'web' ? 67 : insets.top;
-  const bottomPad = Platform.OS === 'web' ? 34 : insets.bottom;
+  const topPad = Platform.OS === "web" ? 67 : insets.top;
+  const bottomPad = Platform.OS === "web" ? 34 : insets.bottom;
 
   function handleExport() {
     const json = exportData();
-    if (Platform.OS === 'web') {
-      Alert.alert('Export Data', 'Copy the JSON below to back up your vault.', [
-        { text: 'OK' },
+    if (Platform.OS === "web") {
+      Alert.alert("Export Data", "Copy the JSON below to back up your vault.", [
+        { text: "OK" },
       ]);
     } else {
-      Share.share({ message: json, title: 'Private Vault Export' });
+      Share.share({ message: json, title: "Private Vault Export" });
     }
   }
 
   function handleClearHistory() {
-    Alert.alert('Clear History', 'Remove all watch history?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Clear', style: 'destructive', onPress: clearHistory },
+    Alert.alert("Clear History", "Remove all watch history?", [
+      { text: "Cancel", style: "cancel" },
+      { text: "Clear", style: "destructive", onPress: clearHistory },
     ]);
   }
 
   function handleNuke() {
     Alert.alert(
-      'Delete Everything',
-      'This will permanently delete ALL media, tags, and history from your vault. This cannot be undone.',
+      "Delete Everything",
+      "This will permanently delete ALL media, tags, and history from your vault. This cannot be undone.",
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: "Cancel", style: "cancel" },
         {
-          text: 'Delete Everything',
-          style: 'destructive',
+          text: "Delete Everything",
+          style: "destructive",
           onPress: async () => {
             await nukeAll();
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
           },
         },
-      ]
+      ],
     );
   }
 
@@ -119,12 +151,30 @@ export default function SettingsScreen() {
     lock();
   }
 
-  const currentTimeout = TIMEOUT_OPTIONS.find((o) => o.value === idleTimeout) ?? TIMEOUT_OPTIONS[2];
+  const currentTimeout =
+    TIMEOUT_OPTIONS.find((o) => o.value === idleTimeout) ?? TIMEOUT_OPTIONS[2];
 
   return (
     <View style={[styles.root, { paddingTop: topPad }]}>
+      <ColorBends
+        rotation={45}
+        autoRotate={0.05}
+        speed={0.4}
+        colors={["#0a84ff", "#bf5af2", "#ff375f", "#30d158", "#ffd60a"]}
+        transparent={true}
+        scale={1}
+        frequency={1.2}
+        warpStrength={1.5}
+        mouseInfluence={1.5}
+        parallax={0.5}
+        noise={0.1}
+        style={{ ...StyleSheet.absoluteFillObject, zIndex: 0 }}
+      />
       <ScrollView
-        contentContainerStyle={[styles.scroll, { paddingBottom: bottomPad + 100 }]}
+        contentContainerStyle={[
+          styles.scroll,
+          { paddingBottom: bottomPad + 100 },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerSection}>
@@ -133,9 +183,9 @@ export default function SettingsScreen() {
 
         <View style={styles.statsRow}>
           {[
-            { label: 'Items', value: items.length },
-            { label: 'Tags', value: tags.length },
-            { label: 'Watched', value: history.length },
+            { label: "Items", value: items.length },
+            { label: "Tags", value: tags.length },
+            { label: "Watched", value: history.length },
           ].map((stat) => (
             <View key={stat.label} style={styles.statCard}>
               <Text style={styles.statValue}>{stat.value}</Text>
@@ -147,8 +197,8 @@ export default function SettingsScreen() {
         <Section title="Security">
           <Row
             icon="key-outline"
-            label={hasPin ? 'Change PIN' : 'Set PIN'}
-            onPress={() => router.push('/change-pin')}
+            label={hasPin ? "Change PIN" : "Set PIN"}
+            onPress={() => router.push("/change-pin")}
           />
           <View style={styles.rowDivider} />
           <Row
@@ -182,14 +232,23 @@ export default function SettingsScreen() {
                     {opt.label}
                   </Text>
                   {opt.value === idleTimeout && (
-                    <Ionicons name="checkmark" size={16} color={Colors.accent} />
+                    <Ionicons
+                      name="checkmark"
+                      size={16}
+                      color={Colors.accent}
+                    />
                   )}
                 </Pressable>
               ))}
             </View>
           )}
           <View style={styles.rowDivider} />
-          <Row icon="lock-closed-outline" iconColor={Colors.danger} label="Lock Vault" onPress={handleLock} />
+          <Row
+            icon="lock-closed-outline"
+            iconColor={Colors.danger}
+            label="Lock Vault"
+            onPress={handleLock}
+          />
         </Section>
 
         <Section title="Library">
@@ -198,7 +257,7 @@ export default function SettingsScreen() {
             iconColor={Colors.success}
             label="Manage Tags"
             sublabel={`${tags.length} tags`}
-            onPress={() => router.push('/tags')}
+            onPress={() => router.push("/tags")}
           />
         </Section>
 
@@ -245,18 +304,19 @@ const styles = StyleSheet.create({
   scroll: {
     paddingHorizontal: 20,
     gap: 4,
+    backgroundColor: "transparent",
   },
   headerSection: {
     paddingVertical: 16,
   },
   title: {
     fontSize: 28,
-    fontWeight: '700',
+    fontWeight: "700",
     color: Colors.text,
-    fontFamily: 'Inter_700Bold',
+    fontFamily: "Inter_700Bold",
   },
   statsRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
     marginBottom: 24,
   },
@@ -267,29 +327,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.glassBorder,
     padding: 14,
-    alignItems: 'center',
+    alignItems: "center",
     gap: 4,
   },
   statValue: {
     fontSize: 22,
-    fontWeight: '700',
+    fontWeight: "700",
     color: Colors.text,
-    fontFamily: 'Inter_700Bold',
+    fontFamily: "Inter_700Bold",
   },
   statLabel: {
     fontSize: 11,
     color: Colors.textTertiary,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: "Inter_400Regular",
   },
   section: {
     marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: "600",
     color: Colors.textTertiary,
-    fontFamily: 'Inter_600SemiBold',
-    textTransform: 'uppercase',
+    fontFamily: "Inter_600SemiBold",
+    textTransform: "uppercase",
     letterSpacing: 1,
     marginBottom: 8,
     paddingHorizontal: 4,
@@ -299,11 +359,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: Colors.glassBorder,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 13,
     gap: 12,
@@ -312,8 +372,8 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   rowInfo: {
     flex: 1,
@@ -321,14 +381,14 @@ const styles = StyleSheet.create({
   },
   rowLabel: {
     fontSize: 15,
-    fontWeight: '500',
+    fontWeight: "500",
     color: Colors.text,
-    fontFamily: 'Inter_500Medium',
+    fontFamily: "Inter_500Medium",
   },
   rowSublabel: {
     fontSize: 12,
     color: Colors.textTertiary,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: "Inter_400Regular",
   },
   rowDivider: {
     height: 1,
@@ -340,14 +400,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginBottom: 8,
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 1,
     borderColor: Colors.glassBorder,
   },
   timeoutOpt: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 14,
     paddingVertical: 11,
     borderBottomWidth: 1,
@@ -359,13 +419,13 @@ const styles = StyleSheet.create({
   timeoutOptText: {
     fontSize: 14,
     color: Colors.text,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: "Inter_400Regular",
   },
   version: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 12,
     color: Colors.textTertiary,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: "Inter_400Regular",
     marginTop: 8,
   },
 });

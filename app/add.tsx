@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -9,51 +9,52 @@ import {
   ActivityIndicator,
   Platform,
   KeyboardAvoidingView,
-} from 'react-native';
-import { router } from 'expo-router';
-import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useMedia } from '@/contexts/MediaContext';
-import StarRating from '@/components/StarRating';
-import TagPill from '@/components/TagPill';
-import { Colors } from '@/constants/colors';
-import { fetchMetadata } from '@/lib/utils';
+} from "react-native";
+import { router } from "expo-router";
+import { Image } from "expo-image";
+import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useMedia } from "@/contexts/MediaContext";
+import StarRating from "@/components/StarRating";
+import TagPill from "@/components/TagPill";
+import { Colors } from "@/constants/colors";
+import { fetchMetadata } from "@/lib/utils";
+import DarkVeil from "@/components/DarkVeil";
 
-type Tab = 'single' | 'bulk';
+type Tab = "single" | "bulk";
 
 export default function AddScreen() {
   const { tags, addItem, addTag, bulkImport } = useMedia();
   const insets = useSafeAreaInsets();
-  const [activeTab, setActiveTab] = useState<Tab>('single');
+  const [activeTab, setActiveTab] = useState<Tab>("single");
 
-  const [url, setUrl] = useState('');
-  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [rating, setRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState("");
   const [fetching, setFetching] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [fetchError, setFetchError] = useState('');
+  const [fetchError, setFetchError] = useState("");
 
-  const [bulkText, setBulkText] = useState('');
+  const [bulkText, setBulkText] = useState("");
   const [bulkSaving, setBulkSaving] = useState(false);
   const [bulkResult, setBulkResult] = useState<string | null>(null);
 
-  const bottomPad = Platform.OS === 'web' ? 34 : insets.bottom;
+  const bottomPad = Platform.OS === "web" ? 34 : insets.bottom;
 
   async function handleFetch() {
     if (!url.trim()) return;
     setFetching(true);
-    setFetchError('');
+    setFetchError("");
     try {
       const meta = await fetchMetadata(url.trim());
       setTitle(meta.title);
       setThumbnail(meta.thumbnail);
     } catch {
-      setFetchError('Could not fetch metadata');
+      setFetchError("Could not fetch metadata");
     }
     setFetching(false);
   }
@@ -81,9 +82,9 @@ export default function AddScreen() {
     try {
       let count = 0;
       const lines = bulkText
-        .split('\n')
+        .split("\n")
         .map((l) => l.trim())
-        .filter((l) => l.startsWith('http'));
+        .filter((l) => l.startsWith("http"));
 
       for (const line of lines) {
         try {
@@ -95,7 +96,7 @@ export default function AddScreen() {
             tags: [],
             rating: 0,
             isFavorite: false,
-            notes: '',
+            notes: "",
           });
           count++;
         } catch {}
@@ -103,14 +104,16 @@ export default function AddScreen() {
       setBulkResult(`Added ${count} of ${lines.length} items`);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } catch (e) {
-      setBulkResult('Import failed. Check format.');
+      setBulkResult("Import failed. Check format.");
     }
     setBulkSaving(false);
   }
 
   function toggleTag(tagId: string) {
     setSelectedTags((prev) =>
-      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId],
     );
   }
 
@@ -119,9 +122,10 @@ export default function AddScreen() {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <View style={[styles.root, { paddingBottom: bottomPad }]}>
+        <DarkVeil baseOpacity={0.2} />
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Add to Vault</Text>
           <Pressable onPress={() => router.back()} style={styles.closeBtn}>
@@ -130,14 +134,19 @@ export default function AddScreen() {
         </View>
 
         <View style={styles.tabRow}>
-          {(['single', 'bulk'] as Tab[]).map((tab) => (
+          {(["single", "bulk"] as Tab[]).map((tab) => (
             <Pressable
               key={tab}
               style={[styles.tab, activeTab === tab && styles.tabActive]}
               onPress={() => setActiveTab(tab)}
             >
-              <Text style={[styles.tabText, activeTab === tab && styles.tabTextActive]}>
-                {tab === 'single' ? 'Single URL' : 'Bulk Import'}
+              <Text
+                style={[
+                  styles.tabText,
+                  activeTab === tab && styles.tabTextActive,
+                ]}
+              >
+                {tab === "single" ? "Single URL" : "Bulk Import"}
               </Text>
             </Pressable>
           ))}
@@ -149,7 +158,7 @@ export default function AddScreen() {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {activeTab === 'single' ? (
+          {activeTab === "single" ? (
             <>
               <View style={styles.field}>
                 <Text style={styles.label}>URL</Text>
@@ -165,7 +174,10 @@ export default function AddScreen() {
                     keyboardType="url"
                   />
                   <Pressable
-                    style={[styles.fetchBtn, (!url.trim() || fetching) && { opacity: 0.5 }]}
+                    style={[
+                      styles.fetchBtn,
+                      (!url.trim() || fetching) && { opacity: 0.5 },
+                    ]}
                     onPress={handleFetch}
                     disabled={!url.trim() || fetching}
                   >
@@ -176,12 +188,18 @@ export default function AddScreen() {
                     )}
                   </Pressable>
                 </View>
-                {fetchError ? <Text style={styles.error}>{fetchError}</Text> : null}
+                {fetchError ? (
+                  <Text style={styles.error}>{fetchError}</Text>
+                ) : null}
               </View>
 
               {thumbnail ? (
                 <View style={styles.thumbPreview}>
-                  <Image source={{ uri: thumbnail }} style={styles.thumbImg} contentFit="cover" />
+                  <Image
+                    source={{ uri: thumbnail }}
+                    style={styles.thumbImg}
+                    contentFit="cover"
+                  />
                 </View>
               ) : null}
 
@@ -250,11 +268,14 @@ export default function AddScreen() {
           ) : (
             <>
               <Text style={styles.bulkHint}>
-                Paste one URL per line. YouTube, Vimeo, and other links are supported.
+                Paste one URL per line. YouTube, Vimeo, and other links are
+                supported.
               </Text>
               <TextInput
                 style={[styles.input, styles.bulkInput]}
-                placeholder={'https://youtube.com/watch?v=...\nhttps://vimeo.com/...'}
+                placeholder={
+                  "https://youtube.com/watch?v=...\nhttps://vimeo.com/..."
+                }
                 placeholderTextColor={Colors.textTertiary}
                 value={bulkText}
                 onChangeText={setBulkText}
@@ -263,9 +284,14 @@ export default function AddScreen() {
                 autoCapitalize="none"
                 autoCorrect={false}
               />
-              {bulkResult ? <Text style={styles.bulkResult}>{bulkResult}</Text> : null}
+              {bulkResult ? (
+                <Text style={styles.bulkResult}>{bulkResult}</Text>
+              ) : null}
               <Pressable
-                style={[styles.saveBtn, (!bulkText.trim() || bulkSaving) && { opacity: 0.4 }]}
+                style={[
+                  styles.saveBtn,
+                  (!bulkText.trim() || bulkSaving) && { opacity: 0.4 },
+                ]}
                 onPress={handleBulkSave}
                 disabled={!bulkText.trim() || bulkSaving}
               >
@@ -273,7 +299,11 @@ export default function AddScreen() {
                   <ActivityIndicator size="small" color="white" />
                 ) : (
                   <>
-                    <Ionicons name="cloud-download-outline" size={20} color="white" />
+                    <Ionicons
+                      name="cloud-download-outline"
+                      size={20}
+                      color="white"
+                    />
                     <Text style={styles.saveBtnText}>Import URLs</Text>
                   </>
                 )}
@@ -292,29 +322,29 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.bgFloating,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 12,
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: "700",
     color: Colors.text,
-    fontFamily: 'Inter_700Bold',
+    fontFamily: "Inter_700Bold",
   },
   closeBtn: {
     width: 32,
     height: 32,
     borderRadius: 16,
     backgroundColor: Colors.glass,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   tabRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginHorizontal: 20,
     backgroundColor: Colors.glass,
     borderRadius: 12,
@@ -327,7 +357,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 8,
     borderRadius: 9,
-    alignItems: 'center',
+    alignItems: "center",
   },
   tabActive: {
     backgroundColor: Colors.accent,
@@ -335,10 +365,10 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 13,
     color: Colors.textSecondary,
-    fontFamily: 'Inter_500Medium',
+    fontFamily: "Inter_500Medium",
   },
   tabTextActive: {
-    color: 'white',
+    color: "white",
   },
   scroll: {
     paddingHorizontal: 20,
@@ -351,10 +381,10 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
     color: Colors.textTertiary,
-    fontFamily: 'Inter_600SemiBold',
-    textTransform: 'uppercase',
+    fontFamily: "Inter_600SemiBold",
+    textTransform: "uppercase",
     letterSpacing: 0.8,
   },
   input: {
@@ -366,14 +396,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 15,
     color: Colors.text,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: "Inter_400Regular",
   },
   textArea: {
     minHeight: 96,
     paddingTop: 12,
   },
   urlRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
   },
   fetchBtn: {
@@ -381,50 +411,50 @@ const styles = StyleSheet.create({
     height: 46,
     borderRadius: 12,
     backgroundColor: Colors.accent,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   error: {
     fontSize: 12,
     color: Colors.danger,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: "Inter_400Regular",
   },
   thumbPreview: {
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     aspectRatio: 16 / 9,
-    width: '100%',
+    width: "100%",
     backgroundColor: Colors.bgFloating,
   },
   thumbImg: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   tagGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     gap: 8,
   },
   saveBtn: {
     backgroundColor: Colors.accent,
     borderRadius: 14,
     paddingVertical: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
     marginTop: 8,
   },
   saveBtnText: {
     fontSize: 16,
-    fontWeight: '600',
-    color: 'white',
-    fontFamily: 'Inter_600SemiBold',
+    fontWeight: "600",
+    color: "white",
+    fontFamily: "Inter_600SemiBold",
   },
   bulkHint: {
     fontSize: 13,
     color: Colors.textSecondary,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: "Inter_400Regular",
     lineHeight: 18,
   },
   bulkInput: {
@@ -434,6 +464,6 @@ const styles = StyleSheet.create({
   bulkResult: {
     fontSize: 14,
     color: Colors.success,
-    fontFamily: 'Inter_500Medium',
+    fontFamily: "Inter_500Medium",
   },
 });
