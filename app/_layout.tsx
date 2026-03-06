@@ -1,23 +1,23 @@
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { KeyboardProvider } from 'react-native-keyboard-controller';
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import {
   useFonts,
   Inter_400Regular,
   Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
-} from '@expo-google-fonts/inter';
-import { View } from 'react-native';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { queryClient } from '@/lib/query-client';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider, useAuth } from '@/contexts/AuthContext';
-import { MediaProvider } from '@/contexts/MediaContext';
-import AuthGate from '@/components/AuthGate';
-import { Colors } from '@/constants/colors';
+} from "@expo-google-fonts/inter";
+import { View } from "react-native";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { queryClient } from "@/lib/query-client";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { MediaProvider } from "@/contexts/MediaContext";
+import AuthGate from "@/components/AuthGate";
+import { Colors } from "@/constants/colors";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,14 +37,14 @@ function RootLayoutNav() {
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: Colors.bg },
-        animation: 'ios',
+        animation: "ios",
       }}
     >
       <Stack.Screen name="(tabs)" />
       <Stack.Screen
         name="add"
         options={{
-          presentation: 'formSheet',
+          presentation: "formSheet",
           sheetAllowedDetents: [0.92],
           sheetGrabberVisible: true,
           contentStyle: { backgroundColor: Colors.bgFloating },
@@ -53,13 +53,13 @@ function RootLayoutNav() {
       <Stack.Screen
         name="player/[id]"
         options={{
-          presentation: 'fullScreenModal',
+          presentation: "fullScreenModal",
         }}
       />
       <Stack.Screen
         name="edit/[id]"
         options={{
-          presentation: 'formSheet',
+          presentation: "formSheet",
           sheetAllowedDetents: [0.95],
           sheetGrabberVisible: true,
           contentStyle: { backgroundColor: Colors.bgFloating },
@@ -68,7 +68,7 @@ function RootLayoutNav() {
       <Stack.Screen
         name="tags"
         options={{
-          presentation: 'formSheet',
+          presentation: "formSheet",
           sheetAllowedDetents: [0.85],
           sheetGrabberVisible: true,
           contentStyle: { backgroundColor: Colors.bgFloating },
@@ -77,7 +77,7 @@ function RootLayoutNav() {
       <Stack.Screen
         name="change-pin"
         options={{
-          presentation: 'formSheet',
+          presentation: "formSheet",
           sheetAllowedDetents: [0.85],
           sheetGrabberVisible: true,
           contentStyle: { backgroundColor: Colors.bgFloating },
@@ -106,7 +106,7 @@ export default function RootLayout() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
+        <GestureHandlerRootView style={{ flex: 1, backgroundColor: "#000" }}>
           <KeyboardProvider>
             <AuthProvider>
               <MediaProvider>

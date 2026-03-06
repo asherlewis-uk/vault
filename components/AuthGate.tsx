@@ -348,6 +348,7 @@ const styles = StyleSheet.create({
   },
   keypad: {
     width: "100%",
+    minHeight: 400,
     gap: 10,
   },
   keyRow: {
@@ -366,7 +367,8 @@ const styles = StyleSheet.create({
   },
   key: {
     flex: 1,
-    height: 70,
+    aspectRatio: 1,
+    maxHeight: 80,
     backgroundColor: "rgba(255,255,255,0.06)",
     borderRadius: 20,
     borderWidth: 1,
@@ -401,7 +403,8 @@ const styles = StyleSheet.create({
   },
   deleteKey: {
     flex: 1,
-    height: 70,
+    aspectRatio: 1,
+    maxHeight: 80,
     alignItems: "center",
     justifyContent: "center",
   },
