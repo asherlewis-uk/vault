@@ -9,15 +9,7 @@
  *  - Platform-gated: Three.js on web only
  */
 import React, { useEffect, useRef } from "react";
-import { View, Platform, StyleSheet, type ColorValue } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  Easing,
-} from "react-native-reanimated";
+import { View, Platform, StyleSheet } from "react-native";
 
 /* ── Shared types ──────────────────────────────────────────────── */
 
@@ -271,14 +263,7 @@ function ColorBendsWeb(props: ColorBendsProps) {
         const rad = (deg * Math.PI) / 180;
         material.uniforms.uRot.value.set(Math.cos(rad), Math.sin(rad));
 
-        const fallback = [
-          "#0a84ff",
-          "#bf5af2",
-          "#ff375f",
-          "#30d158",
-          "#ffd60a",
-        ];
-        const rawColors = p.colors && p.colors.length > 0 ? p.colors : fallback;
+        const rawColors = p.colors || [];
         const arr = rawColors.slice(0, MAX_COLORS).map(toVec3);
         for (let i = 0; i < MAX_COLORS; i++) {
           if (i < arr.length) material.uniforms.uColors.value[i].copy(arr[i]);
@@ -344,60 +329,10 @@ function ColorBendsWeb(props: ColorBendsProps) {
 
 /* ── Native fallback (Reanimated + LinearGradient) ─────────────── */
 
-const PALETTES: Record<string, readonly [string, string, string]> = {
-  blue: ["rgba(10,132,255,0.06)", "rgba(94,92,230,0.04)", "transparent"],
-  purple: ["rgba(94,92,230,0.06)", "rgba(175,82,222,0.04)", "transparent"],
-  green: ["rgba(48,209,88,0.05)", "rgba(10,132,255,0.03)", "transparent"],
-};
-
-function ColorBendsNative({ accent = "blue", style }: ColorBendsProps) {
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
-  const opacity = useSharedValue(0.6);
-
-  useEffect(() => {
-    translateX.value = withRepeat(
-      withTiming(30, { duration: 12000, easing: Easing.inOut(Easing.sin) }),
-      -1,
-      true,
-    );
-    translateY.value = withRepeat(
-      withTiming(-20, { duration: 15000, easing: Easing.inOut(Easing.sin) }),
-      -1,
-      true,
-    );
-    opacity.value = withRepeat(
-      withTiming(1, { duration: 8000, easing: Easing.inOut(Easing.sin) }),
-      -1,
-      true,
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const animStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value },
-      { translateY: translateY.value },
-    ],
-    opacity: opacity.value,
-  }));
-
-  const gradientColors = PALETTES[accent] as unknown as readonly [
-    ColorValue,
-    ColorValue,
-    ...ColorValue[],
-  ];
-
+function ColorBendsNative({ style }: ColorBendsProps) {
   return (
     <View style={[styles.container, style]} pointerEvents="none">
-      <Animated.View style={[styles.gradient, animStyle]}>
-        <LinearGradient
-          colors={gradientColors}
-          start={{ x: 0.1, y: 0.2 }}
-          end={{ x: 0.9, y: 0.8 }}
-          style={StyleSheet.absoluteFill}
-        />
-      </Animated.View>
+      <View style={styles.gradient} />
     </View>
   );
 }

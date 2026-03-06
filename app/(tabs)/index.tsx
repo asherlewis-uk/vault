@@ -23,7 +23,6 @@ import { useMedia } from "@/contexts/MediaContext";
 import { useAuth } from "@/contexts/AuthContext";
 import MediaCard from "@/components/MediaCard";
 import TagPill from "@/components/TagPill";
-import { Colors } from "@/constants/colors";
 import ColorBends from "@/components/ColorBends";
 import { MediaItem, ViewMode, SortBy } from "@/types";
 
@@ -53,7 +52,7 @@ function FAB({ onPress, bottom }: { onPress: () => void; bottom: number }) {
         }}
       >
         <View style={styles.fabSpecular} />
-        <Ionicons name="add" size={28} color="white" />
+        <Ionicons name="add" size={28} />
       </Pressable>
     </Animated.View>
   );
@@ -215,7 +214,7 @@ export default function LibraryScreen() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <View style={styles.lockBadge}>
-            <Ionicons name="lock-closed" size={12} color={Colors.accent} />
+            <Ionicons name="lock-closed" size={12} />
           </View>
           <View>
             <Text style={styles.appTitle}>Vault</Text>
@@ -227,14 +226,12 @@ export default function LibraryScreen() {
             <Ionicons
               name={searchOpen ? "close" : "search-outline"}
               size={20}
-              color={searchOpen ? Colors.accent : Colors.textSecondary}
             />
           </Pressable>
           <Pressable onPress={cycleViewMode} style={styles.iconBtn}>
             <Ionicons
               name={viewModeIcon[viewMode]}
               size={20}
-              color={Colors.textSecondary}
             />
           </Pressable>
           <Pressable
@@ -247,7 +244,6 @@ export default function LibraryScreen() {
             <Ionicons
               name="lock-open-outline"
               size={20}
-              color={Colors.textSecondary}
             />
           </Pressable>
         </View>
@@ -256,12 +252,11 @@ export default function LibraryScreen() {
       <Animated.View style={[styles.searchContainer, searchStyle]}>
         <View style={styles.searchBox}>
           <View style={styles.searchSpecular} />
-          <Ionicons name="search" size={16} color={Colors.textTertiary} />
+          <Ionicons name="search" size={16} />
           <TextInput
             ref={searchInputRef}
             style={styles.searchInput}
             placeholder="Search titles, notes, tags..."
-            placeholderTextColor={Colors.textTertiary}
             value={search}
             onChangeText={setSearch}
             returnKeyType="done"
@@ -271,7 +266,6 @@ export default function LibraryScreen() {
               <Ionicons
                 name="close-circle"
                 size={16}
-                color={Colors.textTertiary}
               />
             </Pressable>
           )}
@@ -321,14 +315,8 @@ export default function LibraryScreen() {
             <Ionicons
               name={showFavoritesOnly ? "heart" : "heart-outline"}
               size={13}
-              color={showFavoritesOnly ? Colors.danger : Colors.textSecondary}
             />
-            <Text
-              style={[
-                styles.filterChipText,
-                showFavoritesOnly && { color: Colors.danger },
-              ]}
-            >
+            <Text style={styles.filterChipText}>
               Favorites
             </Text>
           </Pressable>
@@ -347,7 +335,6 @@ export default function LibraryScreen() {
             <Ionicons
               name="swap-vertical"
               size={12}
-              color={Colors.textSecondary}
             />
             <Text style={styles.sortChipText}>{currentSortLabel}</Text>
           </Pressable>
@@ -362,7 +349,6 @@ export default function LibraryScreen() {
                 <Ionicons
                   name="film-outline"
                   size={40}
-                  color={Colors.textTertiary}
                 />
               </View>
               <Text style={styles.emptyTitle}>Your vault is empty</Text>
@@ -375,7 +361,6 @@ export default function LibraryScreen() {
               <Ionicons
                 name="search-outline"
                 size={40}
-                color={Colors.textTertiary}
               />
               <Text style={styles.emptyTitle}>No results</Text>
               <Text style={styles.emptySubtitle}>
@@ -415,7 +400,6 @@ export default function LibraryScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bg,
   },
   header: {
     flexDirection: "row",
@@ -423,7 +407,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: "transparent",
   },
   headerLeft: {
     flexDirection: "row",
@@ -433,24 +416,12 @@ const styles = StyleSheet.create({
   lockBadge: {
     width: 30,
     height: 30,
-    borderRadius: 10,
-    backgroundColor: Colors.accentDim,
-    borderWidth: 1,
-    borderColor: Colors.accentGlow,
     alignItems: "center",
     justifyContent: "center",
   },
   appTitle: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: Colors.text,
-    fontFamily: "Inter_700Bold",
-    lineHeight: 26,
   },
   countLabel: {
-    fontSize: 11,
-    color: Colors.textTertiary,
-    fontFamily: "Inter_400Regular",
   },
   headerRight: {
     flexDirection: "row",
@@ -460,7 +431,6 @@ const styles = StyleSheet.create({
   iconBtn: {
     width: 36,
     height: 36,
-    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -471,19 +441,10 @@ const styles = StyleSheet.create({
   searchBox: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.055)",
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.10)",
     paddingHorizontal: 12,
     gap: 8,
     height: 44,
     overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 3,
   },
   searchSpecular: {
     position: "absolute",
@@ -491,17 +452,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: "rgba(255,255,255,0.18)",
   },
   searchInput: {
     flex: 1,
-    fontSize: 15,
-    color: Colors.text,
-    fontFamily: "Inter_400Regular",
   },
   filterBar: {
     paddingBottom: 8,
-    backgroundColor: "transparent",
   },
   filterScroll: {
     paddingHorizontal: 16,
@@ -514,22 +470,12 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 100,
-    backgroundColor: Colors.glass,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
   },
   filterChipActive: {
-    backgroundColor: Colors.accentDim,
-    borderColor: Colors.accent + "60",
   },
   filterChipText: {
-    fontSize: 12,
-    fontFamily: "Inter_500Medium",
-    color: Colors.textSecondary,
   },
   filterChipTextActive: {
-    color: Colors.accent,
   },
   sortChip: {
     flexDirection: "row",
@@ -537,21 +483,13 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 100,
-    backgroundColor: Colors.glass,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
   },
   sortChipText: {
-    fontSize: 12,
-    fontFamily: "Inter_500Medium",
-    color: Colors.textSecondary,
   },
   listContent: {
     paddingHorizontal: 16,
     paddingTop: 4,
     gap: 10,
-    backgroundColor: "transparent",
   },
   columnWrapper: {
     gap: 10,
@@ -565,53 +503,31 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 12,
     paddingHorizontal: 40,
-    backgroundColor: "transparent",
   },
   emptyIcon: {
     width: 80,
     height: 80,
-    borderRadius: 24,
-    backgroundColor: Colors.glass,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 4,
   },
   emptyTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: Colors.textSecondary,
-    fontFamily: "Inter_600SemiBold",
   },
   emptySubtitle: {
-    fontSize: 14,
-    color: Colors.textTertiary,
     textAlign: "center",
-    fontFamily: "Inter_400Regular",
   },
   fab: {
     position: "absolute",
     right: 22,
     width: 56,
     height: 56,
-    borderRadius: 28,
-    shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.5,
-    shadowRadius: 18,
-    elevation: 10,
   },
   fabInner: {
     width: 56,
     height: 56,
-    borderRadius: 28,
-    backgroundColor: Colors.accent,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.22)",
   },
   fabSpecular: {
     position: "absolute",
@@ -619,6 +535,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: "rgba(255,255,255,0.40)",
   },
 });

@@ -17,7 +17,6 @@ import * as Haptics from 'expo-haptics';
 import { useMedia } from '@/contexts/MediaContext';
 import StarRating from '@/components/StarRating';
 import TagPill from '@/components/TagPill';
-import { Colors } from '@/constants/colors';
 
 export default function EditScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -81,10 +80,10 @@ export default function EditScreen() {
           <Text style={styles.headerTitle}>Edit Item</Text>
           <View style={styles.headerActions}>
             <Pressable onPress={handleDelete} style={styles.deleteBtn}>
-              <Ionicons name="trash-outline" size={18} color={Colors.danger} />
+              <Ionicons name="trash-outline" size={18} />
             </Pressable>
             <Pressable onPress={() => router.back()} style={styles.closeBtn}>
-              <Ionicons name="close" size={20} color={Colors.textSecondary} />
+              <Ionicons name="close" size={20} />
             </Pressable>
           </View>
         </View>
@@ -102,7 +101,6 @@ export default function EditScreen() {
               value={title}
               onChangeText={setTitle}
               placeholder="Enter title..."
-              placeholderTextColor={Colors.textTertiary}
             />
           </View>
 
@@ -135,7 +133,6 @@ export default function EditScreen() {
               value={notes}
               onChangeText={setNotes}
               placeholder="Add personal notes..."
-              placeholderTextColor={Colors.textTertiary}
               multiline
               numberOfLines={4}
               textAlignVertical="top"
@@ -149,7 +146,6 @@ export default function EditScreen() {
               value={thumbnail}
               onChangeText={setThumbnail}
               placeholder="https://..."
-              placeholderTextColor={Colors.textTertiary}
               autoCapitalize="none"
               autoCorrect={false}
               keyboardType="url"
@@ -157,7 +153,7 @@ export default function EditScreen() {
           </View>
 
           <View style={styles.urlBox}>
-            <Ionicons name="link-outline" size={14} color={Colors.textTertiary} />
+            <Ionicons name="link-outline" size={14} />
             <Text style={styles.urlText} numberOfLines={1}>{item.url}</Text>
           </View>
 
@@ -174,18 +170,13 @@ export default function EditScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bgFloating,
   },
   notFound: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.bgFloating,
   },
-  notFoundText: {
-    color: Colors.textSecondary,
-    fontFamily: 'Inter_400Regular',
-  },
+  notFoundText: {},
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -194,12 +185,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 12,
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: Colors.text,
-    fontFamily: 'Inter_700Bold',
-  },
+  headerTitle: {},
   headerActions: {
     flexDirection: 'row',
     gap: 8,
@@ -208,16 +194,12 @@ const styles = StyleSheet.create({
   deleteBtn: {
     width: 36,
     height: 36,
-    borderRadius: 10,
-    backgroundColor: Colors.dangerDim,
     alignItems: 'center',
     justifyContent: 'center',
   },
   closeBtn: {
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: Colors.glass,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -230,24 +212,10 @@ const styles = StyleSheet.create({
   field: {
     gap: 8,
   },
-  label: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: Colors.textTertiary,
-    fontFamily: 'Inter_600SemiBold',
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
-  },
+  label: {},
   input: {
-    backgroundColor: Colors.glass,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
-    borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    fontSize: 15,
-    color: Colors.text,
-    fontFamily: 'Inter_400Regular',
   },
   textArea: {
     minHeight: 96,
@@ -263,30 +231,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     padding: 12,
-    backgroundColor: Colors.glass,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
   },
   urlText: {
     flex: 1,
-    fontSize: 12,
-    color: Colors.textTertiary,
-    fontFamily: 'Inter_400Regular',
   },
   saveBtn: {
-    backgroundColor: Colors.accent,
-    borderRadius: 14,
     paddingVertical: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
   },
-  saveBtnText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: 'white',
-    fontFamily: 'Inter_600SemiBold',
-  },
+  saveBtnText: {},
 });

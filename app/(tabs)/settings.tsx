@@ -15,7 +15,6 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { useMedia } from "@/contexts/MediaContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { Colors } from "@/constants/colors";
 import ColorBends from "@/components/ColorBends";
 
 function Section({
@@ -52,23 +51,15 @@ function Row({
 }) {
   return (
     <Pressable
-      style={({ pressed }) => [
-        styles.row,
-        pressed && onPress && { backgroundColor: Colors.glassHover },
-      ]}
+      style={styles.row}
       onPress={onPress}
       disabled={!onPress && !rightContent}
     >
-      <View
-        style={[
-          styles.rowIcon,
-          { backgroundColor: (iconColor ?? Colors.accent) + "22" },
-        ]}
-      >
-        <Ionicons name={icon} size={18} color={iconColor ?? Colors.accent} />
+      <View style={styles.rowIcon}>
+        <Ionicons name={icon} size={18} />
       </View>
       <View style={styles.rowInfo}>
-        <Text style={[styles.rowLabel, danger && { color: Colors.danger }]}>
+        <Text style={styles.rowLabel}>
           {label}
         </Text>
         {sublabel ? <Text style={styles.rowSublabel}>{sublabel}</Text> : null}
@@ -78,7 +69,6 @@ function Row({
           <Ionicons
             name="chevron-forward"
             size={16}
-            color={Colors.textTertiary}
           />
         ) : null)}
     </Pressable>
@@ -203,7 +193,6 @@ export default function SettingsScreen() {
           <View style={styles.rowDivider} />
           <Row
             icon="timer-outline"
-            iconColor={Colors.purple}
             label="Auto-lock"
             sublabel={currentTimeout.label}
             onPress={() => setShowTimeoutPicker(!showTimeoutPicker)}
@@ -213,29 +202,22 @@ export default function SettingsScreen() {
               {TIMEOUT_OPTIONS.map((opt) => (
                 <Pressable
                   key={opt.value}
-                  style={({ pressed }) => [
+                  style={[
                     styles.timeoutOpt,
                     opt.value === idleTimeout && styles.timeoutOptActive,
-                    pressed && { opacity: 0.7 },
                   ]}
                   onPress={() => {
                     setIdleTimeout(opt.value);
                     setShowTimeoutPicker(false);
                   }}
                 >
-                  <Text
-                    style={[
-                      styles.timeoutOptText,
-                      opt.value === idleTimeout && { color: Colors.accent },
-                    ]}
-                  >
+                  <Text style={styles.timeoutOptText}>
                     {opt.label}
                   </Text>
                   {opt.value === idleTimeout && (
                     <Ionicons
                       name="checkmark"
                       size={16}
-                      color={Colors.accent}
                     />
                   )}
                 </Pressable>
@@ -245,7 +227,6 @@ export default function SettingsScreen() {
           <View style={styles.rowDivider} />
           <Row
             icon="lock-closed-outline"
-            iconColor={Colors.danger}
             label="Lock Vault"
             onPress={handleLock}
           />
@@ -254,7 +235,6 @@ export default function SettingsScreen() {
         <Section title="Library">
           <Row
             icon="pricetags-outline"
-            iconColor={Colors.success}
             label="Manage Tags"
             sublabel={`${tags.length} tags`}
             onPress={() => router.push("/tags")}
@@ -264,7 +244,6 @@ export default function SettingsScreen() {
         <Section title="Data">
           <Row
             icon="cloud-upload-outline"
-            iconColor={Colors.accent}
             label="Export Vault"
             sublabel={`${items.length} items`}
             onPress={handleExport}
@@ -272,7 +251,6 @@ export default function SettingsScreen() {
           <View style={styles.rowDivider} />
           <Row
             icon="time-outline"
-            iconColor={Colors.warning}
             label="Clear History"
             sublabel={`${history.length} entries`}
             onPress={handleClearHistory}
@@ -282,7 +260,6 @@ export default function SettingsScreen() {
         <Section title="Danger Zone">
           <Row
             icon="nuclear-outline"
-            iconColor={Colors.danger}
             label="Nuke Everything"
             sublabel="Permanently delete all data"
             onPress={handleNuke}
@@ -299,21 +276,15 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bg,
   },
   scroll: {
     paddingHorizontal: 20,
     gap: 4,
-    backgroundColor: "transparent",
   },
   headerSection: {
     paddingVertical: 16,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: Colors.text,
-    fontFamily: "Inter_700Bold",
   },
   statsRow: {
     flexDirection: "row",
@@ -322,43 +293,23 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    backgroundColor: Colors.glass,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
     padding: 14,
     alignItems: "center",
     gap: 4,
   },
   statValue: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: Colors.text,
-    fontFamily: "Inter_700Bold",
   },
   statLabel: {
-    fontSize: 11,
-    color: Colors.textTertiary,
-    fontFamily: "Inter_400Regular",
   },
   section: {
     marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 11,
-    fontWeight: "600",
-    color: Colors.textTertiary,
-    fontFamily: "Inter_600SemiBold",
     textTransform: "uppercase",
-    letterSpacing: 1,
     marginBottom: 8,
     paddingHorizontal: 4,
   },
   sectionCard: {
-    backgroundColor: Colors.glass,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
     overflow: "hidden",
   },
   row: {
@@ -371,7 +322,6 @@ const styles = StyleSheet.create({
   rowIcon: {
     width: 32,
     height: 32,
-    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -380,29 +330,17 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   rowLabel: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: Colors.text,
-    fontFamily: "Inter_500Medium",
   },
   rowSublabel: {
-    fontSize: 12,
-    color: Colors.textTertiary,
-    fontFamily: "Inter_400Regular",
   },
   rowDivider: {
     height: 1,
-    backgroundColor: Colors.glassBorder,
     marginLeft: 60,
   },
   timeoutPicker: {
-    backgroundColor: Colors.bgElevated,
     marginHorizontal: 16,
     marginBottom: 8,
-    borderRadius: 10,
     overflow: "hidden",
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
   },
   timeoutOpt: {
     flexDirection: "row",
@@ -410,22 +348,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 14,
     paddingVertical: 11,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.glassBorder,
   },
   timeoutOptActive: {
-    backgroundColor: Colors.accentDim,
   },
   timeoutOptText: {
-    fontSize: 14,
-    color: Colors.text,
-    fontFamily: "Inter_400Regular",
   },
   version: {
     textAlign: "center",
-    fontSize: 12,
-    color: Colors.textTertiary,
-    fontFamily: "Inter_400Regular",
     marginTop: 8,
   },
 });

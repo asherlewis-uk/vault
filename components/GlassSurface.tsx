@@ -16,34 +16,33 @@ import { BlurView } from "expo-blur";
 interface GlassSurfaceProps {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
-  /** Blur intensity (iOS BlurView). Default: 24 */
+  /** Blur intensity (iOS BlurView) */
   intensity?: number;
-  /** Border radius. Default: 20 */
+  /** Border radius */
   borderRadius?: number;
-  /** Show border. Default: true */
+  /** Show border */
   bordered?: boolean;
 }
 
 export default function GlassSurface({
   children,
   style,
-  intensity = 24,
-  borderRadius = 20,
-  bordered = true,
+  intensity,
+  borderRadius,
+  bordered,
 }: GlassSurfaceProps) {
   const borderStyle = bordered
-    ? { borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" }
+    ? { borderWidth: 1 }
     : undefined;
 
   if (Platform.OS === "ios") {
     return (
-      <View style={[styles.base, { borderRadius }, borderStyle, style]}>
+      <View style={[styles.base, borderStyle, style]}>
         <BlurView
           intensity={intensity}
-          tint="dark"
-          style={[StyleSheet.absoluteFill, { borderRadius }]}
+          style={StyleSheet.absoluteFill}
         />
-        <View style={[styles.specularHighlight, { borderRadius }]} />
+        <View style={styles.specularHighlight} />
         {children}
       </View>
     );
@@ -53,17 +52,16 @@ export default function GlassSurface({
   const backdropStyle =
     Platform.OS === "web"
       ? ({
-          backdropFilter: `blur(${intensity}px) saturate(180%)`,
-          WebkitBackdropFilter: `blur(${intensity}px) saturate(180%)`,
-          backgroundColor: "rgba(255,255,255,0.04)",
+          backdropFilter: intensity ? `blur(${intensity}px) saturate(180%)` : undefined,
+          WebkitBackdropFilter: intensity ? `blur(${intensity}px) saturate(180%)` : undefined,
         } as any)
-      : { backgroundColor: "rgba(28,28,30,0.85)" };
+      : {};
 
   return (
     <View
-      style={[styles.base, { borderRadius }, borderStyle, backdropStyle, style]}
+      style={[styles.base, borderStyle, backdropStyle, style]}
     >
-      <View style={[styles.specularHighlight, { borderRadius }]} />
+      <View style={styles.specularHighlight} />
       {children}
     </View>
   );
@@ -72,11 +70,6 @@ export default function GlassSurface({
 const styles = StyleSheet.create({
   base: {
     overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.35,
-    shadowRadius: 16,
-    elevation: 8,
   },
   specularHighlight: {
     position: "absolute",
@@ -84,6 +77,5 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: "rgba(255,255,255,0.12)",
   },
 });

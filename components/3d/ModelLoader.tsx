@@ -45,13 +45,10 @@ export function FallbackGeometry() {
     <mesh>
       <icosahedronGeometry args={[0.8, 3]} />
       <meshPhysicalMaterial
-        color="#0a84ff"
         transmission={0.92}
         thickness={1.2}
-        roughness={0.08}
         ior={1.45}
         transparent
-        opacity={0.4}
       />
     </mesh>
   );

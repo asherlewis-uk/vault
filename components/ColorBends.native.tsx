@@ -5,7 +5,6 @@
  */
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Colors } from "@/constants/colors";
 
 interface ColorBendsProps {
   accent?: "blue" | "purple" | "green";
@@ -30,6 +29,5 @@ export default function ColorBends({ style }: ColorBendsProps) {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: Colors.bg,
   },
 });

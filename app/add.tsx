@@ -18,7 +18,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useMedia } from "@/contexts/MediaContext";
 import StarRating from "@/components/StarRating";
 import TagPill from "@/components/TagPill";
-import { Colors } from "@/constants/colors";
 import { fetchMetadata } from "@/lib/utils";
 import DarkVeil from "@/components/DarkVeil";
 
@@ -129,7 +128,7 @@ export default function AddScreen() {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Add to Vault</Text>
           <Pressable onPress={() => router.back()} style={styles.closeBtn}>
-            <Ionicons name="close" size={20} color={Colors.textSecondary} />
+            <Ionicons name="close" size={20} />
           </Pressable>
         </View>
 
@@ -166,7 +165,6 @@ export default function AddScreen() {
                   <TextInput
                     style={[styles.input, { flex: 1 }]}
                     placeholder="Paste URL here..."
-                    placeholderTextColor={Colors.textTertiary}
                     value={url}
                     onChangeText={setUrl}
                     autoCapitalize="none"
@@ -208,7 +206,6 @@ export default function AddScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Enter title..."
-                  placeholderTextColor={Colors.textTertiary}
                   value={title}
                   onChangeText={setTitle}
                 />
@@ -241,7 +238,6 @@ export default function AddScreen() {
                 <TextInput
                   style={[styles.input, styles.textArea]}
                   placeholder="Add personal notes..."
-                  placeholderTextColor={Colors.textTertiary}
                   value={notes}
                   onChangeText={setNotes}
                   multiline
@@ -276,7 +272,6 @@ export default function AddScreen() {
                 placeholder={
                   "https://youtube.com/watch?v=...\nhttps://vimeo.com/..."
                 }
-                placeholderTextColor={Colors.textTertiary}
                 value={bulkText}
                 onChangeText={setBulkText}
                 multiline
@@ -319,7 +314,6 @@ export default function AddScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bgFloating,
   },
   header: {
     flexDirection: "row",
@@ -329,47 +323,27 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 12,
   },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: Colors.text,
-    fontFamily: "Inter_700Bold",
-  },
+  headerTitle: {},
   closeBtn: {
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: Colors.glass,
     alignItems: "center",
     justifyContent: "center",
   },
   tabRow: {
     flexDirection: "row",
     marginHorizontal: 20,
-    backgroundColor: Colors.glass,
-    borderRadius: 12,
     padding: 4,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
     marginBottom: 8,
   },
   tab: {
     flex: 1,
     paddingVertical: 8,
-    borderRadius: 9,
     alignItems: "center",
   },
-  tabActive: {
-    backgroundColor: Colors.accent,
-  },
-  tabText: {
-    fontSize: 13,
-    color: Colors.textSecondary,
-    fontFamily: "Inter_500Medium",
-  },
-  tabTextActive: {
-    color: "white",
-  },
+  tabActive: {},
+  tabText: {},
+  tabTextActive: {},
   scroll: {
     paddingHorizontal: 20,
     paddingTop: 8,
@@ -379,24 +353,10 @@ const styles = StyleSheet.create({
   field: {
     gap: 8,
   },
-  label: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: Colors.textTertiary,
-    fontFamily: "Inter_600SemiBold",
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
-  },
+  label: {},
   input: {
-    backgroundColor: Colors.glass,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
-    borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    fontSize: 15,
-    color: Colors.text,
-    fontFamily: "Inter_400Regular",
   },
   textArea: {
     minHeight: 96,
@@ -409,22 +369,14 @@ const styles = StyleSheet.create({
   fetchBtn: {
     width: 46,
     height: 46,
-    borderRadius: 12,
-    backgroundColor: Colors.accent,
     alignItems: "center",
     justifyContent: "center",
   },
-  error: {
-    fontSize: 12,
-    color: Colors.danger,
-    fontFamily: "Inter_400Regular",
-  },
+  error: {},
   thumbPreview: {
-    borderRadius: 12,
     overflow: "hidden",
     aspectRatio: 16 / 9,
     width: "100%",
-    backgroundColor: Colors.bgFloating,
   },
   thumbImg: {
     width: "100%",
@@ -436,8 +388,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   saveBtn: {
-    backgroundColor: Colors.accent,
-    borderRadius: 14,
     paddingVertical: 15,
     flexDirection: "row",
     alignItems: "center",
@@ -445,25 +395,11 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 8,
   },
-  saveBtnText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "white",
-    fontFamily: "Inter_600SemiBold",
-  },
-  bulkHint: {
-    fontSize: 13,
-    color: Colors.textSecondary,
-    fontFamily: "Inter_400Regular",
-    lineHeight: 18,
-  },
+  saveBtnText: {},
+  bulkHint: {},
   bulkInput: {
     height: 200,
     paddingTop: 12,
   },
-  bulkResult: {
-    fontSize: 14,
-    color: Colors.success,
-    fontFamily: "Inter_500Medium",
-  },
+  bulkResult: {},
 });

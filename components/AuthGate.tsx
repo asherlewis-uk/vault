@@ -17,7 +17,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useAuth } from "@/contexts/AuthContext";
-import { Colors } from "@/constants/colors";
 import GlassSurface from "@/components/GlassSurface";
 
 type Step = "enter" | "create" | "confirm";
@@ -33,7 +32,6 @@ function PinDot({ filled }: { filled: boolean }) {
 
   const style = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
-    opacity: filled ? 1 : 0.25,
   }));
 
   return (
@@ -51,10 +49,8 @@ function KeypadButton({
   onPress: () => void;
 }) {
   const scale = useSharedValue(1);
-  const opacity = useSharedValue(1);
   const animStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
-    opacity: opacity.value,
   }));
 
   return (
@@ -62,11 +58,9 @@ function KeypadButton({
       style={styles.keyOuter}
       onPressIn={() => {
         scale.value = withSpring(0.91, { damping: 10, stiffness: 320 });
-        opacity.value = withTiming(0.75, { duration: 80 });
       }}
       onPressOut={() => {
         scale.value = withSpring(1, { damping: 10, stiffness: 320 });
-        opacity.value = withTiming(1, { duration: 100 });
         onPress();
       }}
     >
@@ -188,7 +182,7 @@ export default function AuthGate() {
         <View style={styles.header}>
           <View style={styles.iconRing}>
             <View style={styles.iconRingSpecular} />
-            <Ionicons name="lock-closed" size={26} color={Colors.accent} />
+            <Ionicons name="lock-closed" size={26} />
           </View>
           <Text style={styles.title}>{getTitle()}</Text>
           <Text style={styles.subtitle}>{getSubtitle()}</Text>
@@ -230,7 +224,6 @@ export default function AuthGate() {
               <Ionicons
                 name="backspace-outline"
                 size={22}
-                color={Colors.text}
               />
             </Pressable>
           </View>
@@ -257,7 +250,6 @@ export default function AuthGate() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bg,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -281,18 +273,11 @@ const styles = StyleSheet.create({
   iconRing: {
     width: 76,
     height: 76,
-    borderRadius: 38,
-    backgroundColor: Colors.accentDim,
     borderWidth: 1,
-    borderColor: "rgba(10,132,255,0.40)",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,
     overflow: "hidden",
-    shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.28,
-    shadowRadius: 12,
   },
   iconRingSpecular: {
     position: "absolute",
@@ -300,19 +285,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: "rgba(10,132,255,0.50)",
   },
   title: {
-    fontSize: 26,
-    fontWeight: "700",
-    color: Colors.text,
-    fontFamily: "Inter_700Bold",
+    textAlign: "center",
   },
   subtitle: {
-    fontSize: 14,
-    color: Colors.textSecondary,
     textAlign: "center",
-    fontFamily: "Inter_400Regular",
   },
   dotsRow: {
     flexDirection: "row",
@@ -322,23 +300,10 @@ const styles = StyleSheet.create({
   dot: {
     width: 16,
     height: 16,
-    borderRadius: 8,
-    backgroundColor: "rgba(255,255,255,0.10)",
     borderWidth: 1.5,
-    borderColor: "rgba(255,255,255,0.22)",
   },
-  dotFilled: {
-    backgroundColor: Colors.accent,
-    borderColor: Colors.accent,
-    shadowColor: Colors.accent,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 6,
-  },
+  dotFilled: {},
   error: {
-    fontSize: 13,
-    color: Colors.danger,
-    fontFamily: "Inter_500Medium",
     height: 20,
     marginBottom: 20,
   },
@@ -358,21 +323,12 @@ const styles = StyleSheet.create({
   },
   keyOuter: {
     flex: 1,
-    borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 5,
   },
   key: {
     flex: 1,
     aspectRatio: 1,
     maxHeight: 80,
-    backgroundColor: "rgba(255,255,255,0.06)",
-    borderRadius: 20,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.10)",
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
@@ -383,21 +339,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: "rgba(255,255,255,0.24)",
   },
-  keyLabel: {
-    fontSize: 24,
-    fontWeight: "500",
-    color: Colors.text,
-    fontFamily: "Inter_500Medium",
-    lineHeight: 28,
-  },
-  keySub: {
-    fontSize: 9,
-    color: Colors.textTertiary,
-    letterSpacing: 1.5,
-    fontFamily: "Inter_400Regular",
-  },
+  keyLabel: {},
+  keySub: {},
   keyEmpty: {
     flex: 1,
   },
@@ -411,9 +355,5 @@ const styles = StyleSheet.create({
   backBtn: {
     marginTop: 28,
   },
-  backText: {
-    color: Colors.accent,
-    fontSize: 15,
-    fontFamily: "Inter_500Medium",
-  },
+  backText: {},
 });

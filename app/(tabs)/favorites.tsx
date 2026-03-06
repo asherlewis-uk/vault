@@ -12,7 +12,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useMedia } from "@/contexts/MediaContext";
 import MediaCard from "@/components/MediaCard";
-import { Colors } from "@/constants/colors";
 import ColorBends from "@/components/ColorBends";
 import { ViewMode } from "@/types";
 
@@ -75,7 +74,6 @@ export default function FavoritesScreen() {
                     : "grid-outline"
               }
               size={20}
-              color={Colors.textSecondary}
             />
           </Pressable>
         </View>
@@ -86,7 +84,6 @@ export default function FavoritesScreen() {
           <Ionicons
             name="heart-outline"
             size={48}
-            color={Colors.textTertiary}
           />
           <Text style={styles.emptyTitle}>No favorites yet</Text>
           <Text style={styles.emptySubtitle}>
@@ -138,7 +135,6 @@ export default function FavoritesScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bg,
   },
   header: {
     flexDirection: "row",
@@ -146,18 +142,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: "transparent",
   },
   title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: Colors.text,
-    fontFamily: "Inter_700Bold",
   },
   count: {
-    fontSize: 13,
-    color: Colors.textSecondary,
-    fontFamily: "Inter_400Regular",
     marginTop: 2,
   },
   headerActions: {
@@ -169,7 +157,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 100,
     gap: 10,
-    backgroundColor: "transparent",
   },
   columnWrapper: {
     gap: 10,
@@ -183,19 +170,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 12,
     paddingHorizontal: 40,
-    backgroundColor: "transparent",
   },
   emptyTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: Colors.textSecondary,
-    fontFamily: "Inter_600SemiBold",
   },
   emptySubtitle: {
-    fontSize: 14,
-    color: Colors.textTertiary,
     textAlign: "center",
-    fontFamily: "Inter_400Regular",
-    lineHeight: 20,
   },
 });

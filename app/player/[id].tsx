@@ -18,7 +18,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import StarRating from "@/components/StarRating";
 import TagPill from "@/components/TagPill";
 import FluidGlass from "@/components/FluidGlass";
-import { Colors } from "@/constants/colors";
 import { getEmbedUrl, getSourceLabel } from "@/lib/utils";
 
 let WebView: any = null;
@@ -66,7 +65,7 @@ export default function PlayerScreen() {
     <View style={[styles.root, { paddingTop: topPad }]}>
       <View style={styles.topBar}>
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
-          <Ionicons name="chevron-down" size={22} color={Colors.text} />
+          <Ionicons name="chevron-down" size={22} />
         </Pressable>
         <Text style={styles.sourceLabel} numberOfLines={1}>
           {source}
@@ -81,7 +80,6 @@ export default function PlayerScreen() {
           <Ionicons
             name={item.isFavorite ? "heart" : "heart-outline"}
             size={22}
-            color={item.isFavorite ? Colors.danger : Colors.textSecondary}
           />
         </Pressable>
       </View>
@@ -104,7 +102,7 @@ export default function PlayerScreen() {
                     window.open(item.url, "_blank");
                 }}
               >
-                <Ionicons name="open-outline" size={18} color="white" />
+                <Ionicons name="open-outline" size={18} />
                 <Text style={styles.openBtnText}>Open in Browser</Text>
               </Pressable>
             </View>
@@ -113,7 +111,7 @@ export default function PlayerScreen() {
           <>
             {webviewLoading && (
               <View style={styles.webviewLoader}>
-                <ActivityIndicator size="large" color={Colors.accent} />
+                <ActivityIndicator size="large" />
               </View>
             )}
             <WebView
@@ -135,17 +133,10 @@ export default function PlayerScreen() {
       <View style={styles.metaContainer}>
         <FluidGlass
           variant="lens"
-          style={{
-            height: 250,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            opacity: 0.6,
-          }}
+          style={styles.fluidGlassOverlay}
         />
         <ScrollView
-          style={{ flex: 1 }}
+          style={styles.scrollView}
           contentContainerStyle={[
             styles.meta,
             { paddingBottom: bottomPad + 20 },
@@ -158,7 +149,6 @@ export default function PlayerScreen() {
               <Ionicons
                 name="eye-outline"
                 size={14}
-                color={Colors.textTertiary}
               />
               <Text style={styles.metaChipText}>{item.viewCount} views</Text>
             </View>
@@ -166,7 +156,6 @@ export default function PlayerScreen() {
               <Ionicons
                 name="link-outline"
                 size={14}
-                color={Colors.textTertiary}
               />
               <Text style={styles.metaChipText}>{source}</Text>
             </View>
@@ -207,7 +196,7 @@ export default function PlayerScreen() {
               );
             }}
           >
-            <Ionicons name="pencil-outline" size={16} color={Colors.accent} />
+            <Ionicons name="pencil-outline" size={16} />
             <Text style={styles.editBtnText}>Edit Item</Text>
           </Pressable>
         </ScrollView>
@@ -219,7 +208,6 @@ export default function PlayerScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bg,
   },
   topBar: {
     flexDirection: "row",
@@ -231,16 +219,11 @@ const styles = StyleSheet.create({
   backBtn: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: Colors.glass,
     alignItems: "center",
     justifyContent: "center",
   },
   sourceLabel: {
     flex: 1,
-    fontSize: 14,
-    color: Colors.textSecondary,
-    fontFamily: "Inter_500Medium",
     textAlign: "center",
   },
   favBtn: {
@@ -252,22 +235,18 @@ const styles = StyleSheet.create({
   player: {
     width: "100%",
     aspectRatio: 16 / 9,
-    backgroundColor: "#000",
     position: "relative",
   },
   webview: {
     flex: 1,
-    backgroundColor: "#000",
   },
   webviewLoader: {
     ...StyleSheet.absoluteFillObject,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#000",
   },
   webFallback: {
     flex: 1,
-    backgroundColor: Colors.bgElevated,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -275,41 +254,35 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
   },
   openBtn: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: Colors.accent,
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: 12,
   },
-  openBtnText: {
-    color: "white",
-    fontSize: 15,
-    fontFamily: "Inter_600SemiBold",
-  },
-  noPlayerText: {
-    color: Colors.textTertiary,
-    fontFamily: "Inter_400Regular",
-  },
+  openBtnText: {},
+  noPlayerText: {},
   metaContainer: {
     flex: 1,
     position: "relative",
+  },
+  fluidGlassOverlay: {
+    height: 250,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+  scrollView: {
+    flex: 1,
   },
   meta: {
     padding: 20,
     gap: 14,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: Colors.text,
-    fontFamily: "Inter_700Bold",
-    lineHeight: 24,
-  },
+  title: {},
   metaRow: {
     flexDirection: "row",
     gap: 8,
@@ -318,45 +291,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: Colors.glass,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
   },
-  metaChipText: {
-    fontSize: 12,
-    color: Colors.textTertiary,
-    fontFamily: "Inter_400Regular",
-  },
+  metaChipText: {},
   tagRow: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 6,
   },
   notesBox: {
-    backgroundColor: Colors.glass,
-    borderRadius: 12,
     padding: 14,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
     gap: 6,
   },
   notesLabel: {
-    fontSize: 11,
-    fontWeight: "600",
-    color: Colors.textTertiary,
-    fontFamily: "Inter_600SemiBold",
     textTransform: "uppercase",
-    letterSpacing: 0.8,
   },
-  notesText: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    fontFamily: "Inter_400Regular",
-    lineHeight: 20,
-  },
+  notesText: {},
   editBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -364,31 +315,14 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: Colors.accentDim,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: Colors.accentGlow,
   },
-  editBtnText: {
-    color: Colors.accent,
-    fontSize: 14,
-    fontFamily: "Inter_500Medium",
-  },
+  editBtnText: {},
   notFound: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colors.bg,
     gap: 12,
   },
-  notFoundText: {
-    color: Colors.textSecondary,
-    fontSize: 16,
-    fontFamily: "Inter_400Regular",
-  },
-  backLink: {
-    color: Colors.accent,
-    fontSize: 15,
-    fontFamily: "Inter_500Medium",
-  },
+  notFoundText: {},
+  backLink: {},
 });

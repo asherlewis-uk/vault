@@ -19,7 +19,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useAuth } from '@/contexts/AuthContext';
-import { Colors } from '@/constants/colors';
 
 type Step = 'current' | 'new' | 'confirm';
 
@@ -166,13 +165,13 @@ export default function ChangePinScreen() {
     <View style={[styles.root, { paddingBottom: bottomPad }]}>
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} style={styles.closeBtn}>
-          <Ionicons name="close" size={20} color={Colors.textSecondary} />
+          <Ionicons name="close" size={20} />
         </Pressable>
       </View>
 
       {success ? (
         <View style={styles.center}>
-          <Ionicons name="checkmark-circle" size={64} color={Colors.success} />
+          <Ionicons name="checkmark-circle" size={64} />
           <Text style={styles.successText}>PIN Updated</Text>
         </View>
       ) : (
@@ -203,7 +202,7 @@ export default function ChangePinScreen() {
               <View style={styles.keyEmpty} />
               <KeypadButton label="0" onPress={() => handleDigit('0')} />
               <Pressable style={styles.deleteKey} onPress={handleDelete}>
-                <Ionicons name="backspace-outline" size={24} color={Colors.text} />
+                <Ionicons name="backspace-outline" size={24} />
               </Pressable>
             </View>
           </View>
@@ -216,7 +215,6 @@ export default function ChangePinScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bgFloating,
   },
   header: {
     flexDirection: 'row',
@@ -228,8 +226,6 @@ const styles = StyleSheet.create({
   closeBtn: {
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: Colors.glass,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -240,12 +236,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     gap: 20,
   },
-  stepTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: Colors.text,
-    fontFamily: 'Inter_700Bold',
-  },
+  stepTitle: {},
   dotsRow: {
     flexDirection: 'row',
     gap: 20,
@@ -253,19 +244,9 @@ const styles = StyleSheet.create({
   dot: {
     width: 16,
     height: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.glassBorder,
-    borderWidth: 1.5,
-    borderColor: Colors.glassBorderFocus,
   },
-  dotFilled: {
-    backgroundColor: Colors.accent,
-    borderColor: Colors.accent,
-  },
+  dotFilled: {},
   error: {
-    fontSize: 13,
-    color: Colors.danger,
-    fontFamily: 'Inter_500Medium',
     height: 20,
   },
   keypad: {
@@ -280,19 +261,10 @@ const styles = StyleSheet.create({
   key: {
     flex: 1,
     height: 68,
-    backgroundColor: Colors.glass,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  keyLabel: {
-    fontSize: 22,
-    fontWeight: '500',
-    color: Colors.text,
-    fontFamily: 'Inter_500Medium',
-  },
+  keyLabel: {},
   keyEmpty: { flex: 1 },
   deleteKey: {
     flex: 1,
@@ -300,10 +272,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  successText: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: Colors.success,
-    fontFamily: 'Inter_700Bold',
-  },
+  successText: {},
 });

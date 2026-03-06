@@ -13,7 +13,6 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useMedia } from '@/contexts/MediaContext';
-import { Colors } from '@/constants/colors';
 import { TAG_COLORS } from '@/lib/utils';
 import { Tag } from '@/types';
 
@@ -27,10 +26,10 @@ function TagRow({ tag, itemCount, onEdit, onDelete }: { tag: Tag; itemCount: num
       </View>
       <View style={styles.tagActions}>
         <Pressable onPress={onEdit} style={styles.actionBtn} hitSlop={8}>
-          <Ionicons name="pencil-outline" size={16} color={Colors.textSecondary} />
+          <Ionicons name="pencil-outline" size={16} />
         </Pressable>
         <Pressable onPress={onDelete} style={styles.actionBtn} hitSlop={8}>
-          <Ionicons name="trash-outline" size={16} color={Colors.danger} />
+          <Ionicons name="trash-outline" size={16} />
         </Pressable>
       </View>
     </View>
@@ -84,7 +83,7 @@ export default function TagsScreen() {
       <View style={styles.header}>
         <Text style={styles.title}>Manage Tags</Text>
         <Pressable onPress={() => router.back()} style={styles.closeBtn}>
-          <Ionicons name="close" size={20} color={Colors.textSecondary} />
+          <Ionicons name="close" size={20} />
         </Pressable>
       </View>
 
@@ -93,7 +92,6 @@ export default function TagsScreen() {
         <TextInput
           style={styles.nameInput}
           placeholder="Tag name..."
-          placeholderTextColor={Colors.textTertiary}
           value={newName}
           onChangeText={setNewName}
         />
@@ -111,7 +109,7 @@ export default function TagsScreen() {
           ))}
         </View>
         <Pressable
-          style={[styles.saveBtn, !newName.trim() && { opacity: 0.4 }]}
+          style={styles.saveBtn}
           onPress={handleSave}
           disabled={!newName.trim()}
         >
@@ -134,7 +132,7 @@ export default function TagsScreen() {
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.empty}>
-            <Ionicons name="pricetags-outline" size={36} color={Colors.textTertiary} />
+            <Ionicons name="pricetags-outline" size={36} />
             <Text style={styles.emptyText}>No tags yet. Create one above.</Text>
           </View>
         }
@@ -155,7 +153,6 @@ export default function TagsScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bgFloating,
   },
   header: {
     flexDirection: 'row',
@@ -165,46 +162,23 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 16,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: Colors.text,
-    fontFamily: 'Inter_700Bold',
-  },
+  title: {},
   closeBtn: {
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: Colors.glass,
     alignItems: 'center',
     justifyContent: 'center',
   },
   createBox: {
     marginHorizontal: 20,
     padding: 16,
-    backgroundColor: Colors.glass,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
     gap: 12,
     marginBottom: 20,
   },
-  createTitle: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: Colors.textSecondary,
-    fontFamily: 'Inter_600SemiBold',
-  },
+  createTitle: {},
   nameInput: {
-    backgroundColor: Colors.bgElevated,
-    borderWidth: 1,
-    borderColor: Colors.glassBorder,
-    borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    fontSize: 15,
-    color: Colors.text,
-    fontFamily: 'Inter_400Regular',
   },
   colorRow: {
     flexDirection: 'row',
@@ -214,33 +188,19 @@ const styles = StyleSheet.create({
   colorDot: {
     width: 28,
     height: 28,
-    borderRadius: 14,
   },
   colorDotSelected: {
-    borderWidth: 3,
-    borderColor: 'white',
     transform: [{ scale: 1.15 }],
   },
   saveBtn: {
-    backgroundColor: Colors.accent,
-    borderRadius: 10,
     paddingVertical: 12,
     alignItems: 'center',
   },
-  saveBtnText: {
-    color: 'white',
-    fontSize: 15,
-    fontWeight: '600',
-    fontFamily: 'Inter_600SemiBold',
-  },
+  saveBtnText: {},
   cancelBtn: {
     alignItems: 'center',
   },
-  cancelText: {
-    color: Colors.textSecondary,
-    fontSize: 14,
-    fontFamily: 'Inter_400Regular',
-  },
+  cancelText: {},
   list: {
     paddingHorizontal: 20,
     paddingBottom: 40,
@@ -254,23 +214,13 @@ const styles = StyleSheet.create({
   tagDot: {
     width: 12,
     height: 12,
-    borderRadius: 6,
   },
   tagInfo: {
     flex: 1,
     gap: 2,
   },
-  tagName: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: Colors.text,
-    fontFamily: 'Inter_500Medium',
-  },
-  tagCount: {
-    fontSize: 12,
-    color: Colors.textTertiary,
-    fontFamily: 'Inter_400Regular',
-  },
+  tagName: {},
+  tagCount: {},
   tagActions: {
     flexDirection: 'row',
     gap: 8,
@@ -278,23 +228,16 @@ const styles = StyleSheet.create({
   actionBtn: {
     width: 32,
     height: 32,
-    borderRadius: 8,
-    backgroundColor: Colors.glass,
     alignItems: 'center',
     justifyContent: 'center',
   },
   separator: {
     height: 1,
-    backgroundColor: Colors.glassBorder,
   },
   empty: {
     alignItems: 'center',
     paddingTop: 40,
     gap: 12,
   },
-  emptyText: {
-    fontSize: 14,
-    color: Colors.textTertiary,
-    fontFamily: 'Inter_400Regular',
-  },
+  emptyText: {},
 });

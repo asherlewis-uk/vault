@@ -116,7 +116,7 @@ function FluidGlassWeb({ style, variant }: FluidGlassProps) {
       >
         <ambientLight intensity={0.3} />
         <directionalLight position={[5, 5, 5]} intensity={0.6} />
-        <pointLight position={[-3, 2, 4]} intensity={0.4} color="#0a84ff" />
+        <pointLight position={[-3, 2, 4]} intensity={0.4} />
 
         <Float
           speed={1.5}

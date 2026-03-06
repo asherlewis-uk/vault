@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { Colors } from '@/constants/colors';
 
 interface StarRatingProps {
   rating: number;
@@ -30,7 +29,7 @@ function Star({
       <Ionicons
         name={filled ? 'star' : 'star-outline'}
         size={size}
-        color={filled ? color : Colors.textTertiary}
+        color={color}
       />
     );
   }
@@ -49,7 +48,7 @@ function Star({
         <Ionicons
           name={filled ? 'star' : 'star-outline'}
           size={size}
-          color={filled ? color : Colors.textTertiary}
+          color={color}
         />
       </Animated.View>
     </Pressable>
@@ -60,7 +59,7 @@ export default function StarRating({
   rating,
   onChange,
   size = 16,
-  color = Colors.warning,
+  color,
 }: StarRatingProps) {
   return (
     <View style={styles.row}>

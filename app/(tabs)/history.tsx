@@ -12,7 +12,6 @@ import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useMedia } from "@/contexts/MediaContext";
-import { Colors } from "@/constants/colors";
 import ColorBends from "@/components/ColorBends";
 import { formatDate, getSourceLabel } from "@/lib/utils";
 import { HistoryEntry } from "@/types";
@@ -29,11 +28,11 @@ function HistoryItem({
 
   return (
     <Pressable
-      style={({ pressed }) => [styles.histItem, pressed && { opacity: 0.75 }]}
+      style={styles.histItem}
       onPress={onPlay}
     >
       <View style={styles.histIcon}>
-        <Ionicons name="play-circle-outline" size={20} color={Colors.accent} />
+        <Ionicons name="play-circle-outline" size={20} />
       </View>
       <View style={styles.histInfo}>
         <Text style={styles.histTitle} numberOfLines={1}>
@@ -43,7 +42,7 @@ function HistoryItem({
           {source} · {formatDate(entry.viewedAt)}
         </Text>
       </View>
-      <Ionicons name="chevron-forward" size={16} color={Colors.textTertiary} />
+      <Ionicons name="chevron-forward" size={16} />
     </Pressable>
   );
 }
@@ -95,7 +94,7 @@ export default function HistoryScreen() {
 
       {history.length === 0 ? (
         <View style={styles.empty}>
-          <Ionicons name="time-outline" size={48} color={Colors.textTertiary} />
+          <Ionicons name="time-outline" size={48} />
           <Text style={styles.emptyTitle}>No history yet</Text>
           <Text style={styles.emptySubtitle}>
             Items you watch will appear here
@@ -130,7 +129,6 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.bg,
   },
   header: {
     flexDirection: "row",
@@ -138,37 +136,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: "transparent",
   },
   title: {
-    fontSize: 28,
-    fontWeight: "700",
-    color: Colors.text,
-    fontFamily: "Inter_700Bold",
   },
   count: {
-    fontSize: 13,
-    color: Colors.textSecondary,
-    fontFamily: "Inter_400Regular",
     marginTop: 2,
   },
   clearBtn: {
     paddingHorizontal: 14,
     paddingVertical: 6,
-    backgroundColor: Colors.dangerDim,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "rgba(255,69,58,0.2)",
   },
   clearText: {
-    color: Colors.danger,
-    fontSize: 13,
-    fontFamily: "Inter_500Medium",
   },
   listContent: {
     paddingHorizontal: 16,
     paddingBottom: 100,
-    backgroundColor: "transparent",
   },
   histItem: {
     flexDirection: "row",
@@ -179,8 +161,6 @@ const styles = StyleSheet.create({
   histIcon: {
     width: 36,
     height: 36,
-    borderRadius: 10,
-    backgroundColor: Colors.accentDim,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -189,19 +169,11 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   histTitle: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: Colors.text,
-    fontFamily: "Inter_500Medium",
   },
   histMeta: {
-    fontSize: 12,
-    color: Colors.textTertiary,
-    fontFamily: "Inter_400Regular",
   },
   separator: {
     height: 1,
-    backgroundColor: Colors.glassBorder,
   },
   empty: {
     flex: 1,
@@ -209,18 +181,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 12,
     paddingHorizontal: 40,
-    backgroundColor: "transparent",
   },
   emptyTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: Colors.textSecondary,
-    fontFamily: "Inter_600SemiBold",
   },
   emptySubtitle: {
-    fontSize: 14,
-    color: Colors.textTertiary,
     textAlign: "center",
-    fontFamily: "Inter_400Regular",
   },
 });

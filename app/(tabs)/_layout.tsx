@@ -6,7 +6,6 @@ import { Platform, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import React from "react";
-import { Colors } from "@/constants/colors";
 
 function NativeTabLayout() {
   return (
@@ -39,10 +38,10 @@ function IslandBackground() {
   return (
     <View style={StyleSheet.absoluteFill}>
       {isIOS || isWeb ? (
-        <BlurView intensity={75} tint="dark" style={StyleSheet.absoluteFill} />
+        <BlurView style={StyleSheet.absoluteFill} />
       ) : (
         <View
-          style={[StyleSheet.absoluteFill, { backgroundColor: "#18181c" }]}
+          style={StyleSheet.absoluteFill}
         />
       )}
       <View style={islandStyles.specularLine} />
@@ -59,8 +58,6 @@ function ClassicTabLayout() {
       <Tabs
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: Colors.accent,
-          tabBarInactiveTintColor: Colors.tabIconDefault,
           tabBarShowLabel: false,
           tabBarStyle: {
             position: "absolute",
@@ -68,17 +65,10 @@ function ClassicTabLayout() {
             left: 24,
             right: 24,
             height: 62,
-            borderRadius: 31,
-            backgroundColor: "transparent",
             borderTopWidth: 0,
             elevation: 0,
             overflow: "hidden",
             borderWidth: 1,
-            borderColor: "rgba(255,255,255,0.11)",
-            shadowColor: "#000000",
-            shadowOffset: { width: 0, height: 10 },
-            shadowOpacity: 0.55,
-            shadowRadius: 28,
           },
           tabBarBackground: () => <IslandBackground />,
           tabBarItemStyle: {
@@ -175,18 +165,14 @@ const islandStyles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 1,
-    backgroundColor: "rgba(255,255,255,0.22)",
   },
   tabItem: {
     width: 44,
     height: 44,
-    borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
   },
-  tabItemActive: {
-    backgroundColor: "rgba(10,132,255,0.16)",
-  },
+  tabItemActive: {},
 });
 
 export default function TabLayout() {
